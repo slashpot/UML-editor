@@ -3,10 +3,10 @@ package editor;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -20,19 +20,20 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	BorderPane root;
-	FunctionButton buttons[];
+	Pane canvaspane;
+	Button buttons[];
 	Scene scene;
 	
-	public void init() throws Exception{
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	public void init() throws Exception {
 		root = new BorderPane();
 		SetButtons();
 		SetCanvas();
 		SetMenuBar();
 		scene = new Scene(root, 800, 520);
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 
 	@Override
@@ -43,32 +44,42 @@ public class Main extends Application {
 	}
 
 	private void SetButtons() {
+		// create button panel
 		GridPane buttonpane = new GridPane();
 		buttonpane.setHgap(10);
 		buttonpane.setVgap(10);
 		buttonpane.setPadding(new Insets(5, 3, 5, 3));
 		
-		buttons = new FunctionButton[6];
+		// set Tooptips
+		String tipnames[] = {"select", "association line","generalization line","composition line","class","usecase"};
+		final Tooltip tips[] = new Tooltip[6];
+		for (int i = 0; i < 6; i++) {
+			tips[i] = new Tooltip();
+			tips[i].setText(tipnames[i]);
+		}
+
+		// initialize and add buttons
+		buttons = new Button[6];
 		Image icons[] = new Image[6];
 
 		for (int i = 0; i < 6; i++) {
 			String name = "editor/image/" + i + ".png";
 			icons[i] = new Image(name);
-			
-			buttons[i] = new FunctionButton(i);
+
+			buttons[i] = new Button();
 			buttons[i].setGraphic(new ImageView(icons[i]));
+			buttons[i].setTooltip(tips[i]);
 			buttonpane.add(buttons[i], 0, i);
 		}
+
+		// add panel to root
 		root.setLeft(buttonpane);
 	}
 
 	private void SetCanvas() {
-		Pane canvaspane = new Pane();
+		canvaspane = new Pane();
 		root.setCenter(canvaspane);
-		canvaspane.setBackground(new Background(new BackgroundFill(
-			    Color.WHITE,
-			    CornerRadii.EMPTY,
-			    Insets.EMPTY)));
+		canvaspane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 	}
 
 	private void SetMenuBar() {
@@ -78,5 +89,5 @@ public class Main extends Application {
 		menuBar.getMenus().addAll(menuFile, menuEdit);
 		root.setTop(menuBar);
 	}
-	
+
 }
