@@ -9,7 +9,10 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -17,10 +20,16 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	BorderPane root;
-	Canvas canvas;
-	GraphicsContext gc;
-	int mode = 0;
 	FunctionButton buttons[];
+	Scene scene;
+	
+	public void init() throws Exception{
+		root = new BorderPane();
+		SetButtons();
+		SetCanvas();
+		SetMenuBar();
+		scene = new Scene(root, 800, 520);
+	}
 
 	public static void main(String[] args) {
 		launch(args);
@@ -28,21 +37,9 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		root = new BorderPane();
-		SetButtons();
-		SetCanvas();
-		SetMenuBar();
-		
-		// set scene and stage
-		Scene scene = new Scene(root, 800, 520);
 		primaryStage.setTitle("UML editor");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-	}
-
-	private void ReDraw() {
-		gc.setFill(Color.WHITE);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 	private void SetButtons() {
@@ -67,22 +64,11 @@ public class Main extends Application {
 
 	private void SetCanvas() {
 		Pane canvaspane = new Pane();
-		canvas = new Canvas(800, 600);
-		gc = canvas.getGraphicsContext2D();
-
-		// set canvas background
-		gc.setFill(Color.WHITE);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-		canvaspane.getChildren().add(canvas);
 		root.setCenter(canvaspane);
-
-		// Bind canvas size to stack pane size.
-		canvas.widthProperty().addListener(observable -> ReDraw());
-		canvas.heightProperty().addListener(observable -> ReDraw());
-
-		canvas.widthProperty().bind(canvaspane.widthProperty());
-		canvas.heightProperty().bind(canvaspane.heightProperty());
+		canvaspane.setBackground(new Background(new BackgroundFill(
+			    Color.WHITE,
+			    CornerRadii.EMPTY,
+			    Insets.EMPTY)));
 	}
 
 	private void SetMenuBar() {
