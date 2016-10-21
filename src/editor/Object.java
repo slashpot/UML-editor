@@ -20,5 +20,9 @@ public abstract class Object {
 		origin = point;
 	}
 
+	public Point2D GetOrigin() {
+		return origin;
+	}
+
 	public abstract Shape GetShape();
 }
