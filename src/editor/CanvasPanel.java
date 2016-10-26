@@ -19,16 +19,19 @@ public class CanvasPanel extends Pane {
 	private BasicObject newBasic;
 	private Point2D lineOrigin;
 	private Point2D lineDest;
+	private Rectangle range;
+	private Point2D rangeOrigin;
 	private int objIndex = -1;
 	private int originIndex = -1;
 	private int destIndex = -1;
+	private int portIndex = -1;
 
 	public CanvasPanel() {
 		setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-		setOnMouseClicked(DrawBasic);
-		setOnMousePressed(GetLineOrigin);
-		setOnMouseDragged(GetDragDest);
-		setOnMouseReleased(GetLineDest);
+		setOnMouseClicked(ClickEvent);
+		setOnMousePressed(PressEvent);
+		setOnMouseDragged(DragEvent);
+		setOnMouseReleased(ReleaseEvent);
 	}
 
 	public void SetObjIndex(int index) {
@@ -38,34 +41,36 @@ public class CanvasPanel extends Pane {
 
 	private void ResetObj() {
 		switch (objIndex) {
+		case 0:
+			newBasic = null;
+			newLine = null;
+			break;
+
 		case 1:
-			newLine = new AssociateLine(0);
+			newLine = new AssociateLine();
+			newBasic = null;
+			break;
+
+		case 2:
+			newLine = new GenLine();
 			newBasic = null;
 			break;
 
 		case 4:
-			newBasic = new Class(0);
+			newBasic = new Class();
 			newLine = null;
 			break;
 
 		case 5:
-			newBasic = new UseCase(0);
+			newBasic = new UseCase();
 			newLine = null;
 			break;
 		}
 	}
 
-	private void DrawPorts(Point2D[] ports) {
-		Rectangle rectports[] = new Rectangle[4];
-		for (int i = 0; i < 4; i++) {
-			rectports[i] = new Rectangle(ports[i].getX() - 2.5, ports[i].getY() - 2.5, 5, 5);
-		}
-		this.getChildren().addAll(rectports[0], rectports[1], rectports[2], rectports[3]);
-	}
-
-	private int CheckPort(Point2D point) {
+	private int CheckifInside(Point2D point) {
 		for (int i = 0; i < objects.size(); i++) {
-			if (objects.get(i).GetShape().contains(point) == true)
+			if (objects.get(i).GetBound().contains(point) == true)
 				return i;
 		}
 		return -1;
@@ -75,73 +80,140 @@ public class CanvasPanel extends Pane {
 		Point2D[] ports = objects.get(index).GetPorts();
 		Point2D choose = ports[0];
 		double min = point.distance(ports[0]);
+		portIndex = 0;
 
 		for (int j = 1; j < 4; j++) {
 			if (point.distance(ports[j]) < min) {
 				min = point.distance(ports[j]);
 				choose = ports[j];
+				portIndex = j;
 			}
 		}
 		return choose;
 	}
 
-	private EventHandler<MouseEvent> DrawBasic = new EventHandler<MouseEvent>() {
+	private void SelectSingle(Point2D pos) {
+		int check = CheckifInside(pos);
+
+		if (check != -1) {
+			for (int i = 0; i < objects.size(); i++) {
+				if (i == check && objects.get(i).GetSelect() == false) {
+					objects.get(i).SetSelect(true);
+					objects.get(i).DrawRects();
+					getChildren().addAll(objects.get(i).GetRects());
+				} else if (i != check && objects.get(i).GetSelect() == true) {
+					if (objects.get(i).GetSelect() == true) {
+						objects.get(i).SetSelect(false);
+						getChildren().removeAll(objects.get(i).GetRects());
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < objects.size(); i++) {
+				if (objects.get(i).GetSelect() == true) {
+					objects.get(i).SetSelect(false);
+					getChildren().removeAll(objects.get(i).GetRects());
+				}
+			}
+		}
+	}
+
+	private EventHandler<MouseEvent> ClickEvent = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent event) {
+			Point2D pos = new Point2D(event.getX(), event.getY());
+
 			if (newBasic != null) {
-				Point2D pos = new Point2D(event.getX(), event.getY());
 				newBasic.SetOrigin(pos);
-				CanvasPanel.this.getChildren().add(newBasic.GetShape());
+				CanvasPanel.this.getChildren().addAll(newBasic.GetShape());
 				objects.add(newBasic);
-				DrawPorts(newBasic.GetPorts());
 				ResetObj();
 			}
 		}
 	};
 
-	private EventHandler<MouseEvent> GetLineOrigin = new EventHandler<MouseEvent>() {
+	private EventHandler<MouseEvent> PressEvent = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent event) {
+			Point2D pos = new Point2D(event.getX(), event.getY());
 			if (newLine != null) {
-				Point2D pos = new Point2D(event.getX(), event.getY());
-				originIndex = CheckPort(pos);
+				originIndex = CheckifInside(pos);
 				if (originIndex != -1) {
 					lineOrigin = ChoosePort(pos, originIndex);
 					newLine.SetOrigin(lineOrigin);
-					newLine.SetDest(lineOrigin);
-					CanvasPanel.this.getChildren().add(newLine.GetShape());
+					newLine.SetDest(pos, portIndex);
+					getChildren().addAll(newLine.GetShape());
 				} else {
 					lineOrigin = null;
 				}
 			}
-		}
-	};
 
-	private EventHandler<MouseEvent> GetDragDest = new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			if (newLine != null && lineOrigin != null) {
-				Point2D pos = new Point2D(event.getX(), event.getY());
-				newLine.SetDest(pos);
+			if (objIndex == 0) {
+				SelectSingle(pos);
+				range = new Rectangle(0, 0);
+				range.setFill(Color.TRANSPARENT);
+				range.setStroke(Color.GRAY);
+				range.setX(pos.getX());
+				range.setY(pos.getY());
+				rangeOrigin = pos;
+				getChildren().add(range);
 			}
 		}
 	};
 
-	private EventHandler<MouseEvent> GetLineDest = new EventHandler<MouseEvent>() {
+	private EventHandler<MouseEvent> DragEvent = new EventHandler<MouseEvent>() {
+
+		@Override
+		public void handle(MouseEvent event) {
+			Point2D pos = new Point2D(event.getX(), event.getY());
+
+			if (newLine != null && lineOrigin != null) {
+				newLine.SetDest(pos, portIndex);
+			}
+
+			if (objIndex == 0) {
+				double width = pos.getX() - rangeOrigin.getX();
+				double height = pos.getY() - rangeOrigin.getY();
+
+				if (width > 0) {
+					range.setWidth(width);
+				} else {
+					range.setWidth((-1) * width);
+					range.setX(pos.getX());
+				}
+
+				if (height > 0) {
+					range.setHeight(height);
+				} else {
+					range.setHeight((-1) * height);
+					range.setY(pos.getY());
+				}
+			}
+		}
+	};
+
+	private EventHandler<MouseEvent> ReleaseEvent = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent event) {
 			if (newLine != null && lineOrigin != null) {
 				Point2D pos = new Point2D(event.getX(), event.getY());
-				destIndex = CheckPort(pos);
+				destIndex = CheckifInside(pos);
 				if (destIndex != -1 && destIndex != originIndex) {
 					lineDest = ChoosePort(pos, destIndex);
-					newLine.SetDest(lineDest);
+					newLine.SetDest(lineDest, portIndex);
 				} else {
-					CanvasPanel.this.getChildren().remove(newLine.GetShape());
+					getChildren().removeAll(newLine.GetShape());
 				}
+			}
+			if (objIndex == 0) {
+				for (int i = 0; i < objects.size(); i++) {
+					if (range.getBoundsInParent().intersects(objects.get(i).GetBound().getBoundsInParent())) {
+						
+					}
+				}
+				getChildren().remove(range);
 			}
 			ResetObj();
 		}
 	};
-
 }

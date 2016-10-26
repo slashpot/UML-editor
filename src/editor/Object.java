@@ -1,15 +1,15 @@
 package editor;
 
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Shape;
 
 public abstract class Object {
 	private int depth;
 	protected Point2D origin;
+	protected Shape[] shapes;
 
-	public Object(int depth) {
-		this.depth = depth;
+	public Object() {
+		
 	}
 
 	public int GetDepth() {
@@ -24,5 +24,5 @@ public abstract class Object {
 		return origin;
 	}
 
-	public abstract Shape GetShape();
+	public abstract Shape[] GetShape();
 }
