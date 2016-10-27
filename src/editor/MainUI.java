@@ -2,12 +2,11 @@ package editor;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class MainUI extends Application {
+	private FuncMenu menuBar;
 	private BorderPane root;
 	private ButtonPanel buttonpane;
 	private CanvasPanel canvaspane;
@@ -22,9 +21,12 @@ public class MainUI extends Application {
 		canvaspane = new CanvasPanel();
 		buttonpane = new ButtonPanel();
 		buttonpane.SetCanvasPane(canvaspane);
+		menuBar = new FuncMenu();
+		menuBar.SetCanvasPane(canvaspane);
+
+		root.setTop(menuBar);
 		root.setLeft(buttonpane);
 		root.setCenter(canvaspane);
-		SetMenuBar();
 		scene = new Scene(root, 800, 520);
 	}
 
@@ -34,13 +36,4 @@ public class MainUI extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-
-	private void SetMenuBar() {
-		MenuBar menuBar = new MenuBar();
-		Menu menuFile = new Menu("File");
-		Menu menuEdit = new Menu("Edit");
-		menuBar.getMenus().addAll(menuFile, menuEdit);
-		root.setTop(menuBar);
-	}
-
 }

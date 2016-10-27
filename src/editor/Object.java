@@ -15,6 +15,10 @@ public abstract class Object {
 	public int GetDepth() {
 		return depth;
 	}
+	
+	public void SetDepth(int depth){
+		this.depth = depth;
+	}
 
 	public void SetOrigin(Point2D point) {
 		origin = point;

@@ -46,8 +46,10 @@ public class ButtonPanel extends GridPane {
 	private ChangeListener<Toggle> ButtonListener = new ChangeListener<Toggle>() {
 		@Override
 		public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-			int index = (int) newValue.getUserData();
-			canvaspane.SetObjIndex(index);
+			if(newValue != null){
+				int index = (int) newValue.getUserData();
+				canvaspane.SetObjIndex(index);
+			}
 		}
 	};
 }

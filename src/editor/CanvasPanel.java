@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 
 public class CanvasPanel extends Pane {
 	private ArrayList<BasicObject> objects = new ArrayList<BasicObject>();
+	private ArrayList<CompositeNode> nodes = new ArrayList<CompositeNode>();
 	private LineObject newLine;
 	private BasicObject newBasic;
 	private Point2D lineOrigin;
@@ -37,6 +38,22 @@ public class CanvasPanel extends Pane {
 	public void SetObjIndex(int index) {
 		objIndex = index;
 		ResetObj();
+	}
+
+	public ArrayList<BasicObject> GetObjects() {
+		return objects;
+	}
+
+	public void AddNode(CompositeNode node) {
+		nodes.add(node);
+	}
+
+	public void RemoveNode(int index) {
+		nodes.remove(index);
+	}
+
+	public ArrayList<CompositeNode> GetNodes() {
+		return nodes;
 	}
 
 	private void ResetObj() {
@@ -69,11 +86,41 @@ public class CanvasPanel extends Pane {
 	}
 
 	private int CheckifInside(Point2D point) {
+		int object = -1;
+		int depth = 100;
 		for (int i = 0; i < objects.size(); i++) {
-			if (objects.get(i).GetBound().contains(point) == true)
-				return i;
+			if (objects.get(i).GetBound().contains(point) == true) {
+				if (objects.get(i).GetDepth() < depth) {
+					object = i;
+					depth = objects.get(i).GetDepth();
+				}
+			}
 		}
-		return -1;
+
+		if (object != -1) {
+			return object;
+		} else {
+			return -1;
+		}
+	}
+
+	private void CheckifinGroup(int check) {
+		for (int node = nodes.size() - 1; node >= 0; node--) {
+			ArrayList<Integer> data = nodes.get(node).GetData();
+			for (int i = 0; i < data.size(); i++) {
+				if (check == data.get(i)) {
+					for (int j = 0; j < data.size(); j++) {
+						int index = data.get(j);
+						if (objects.get(index).isSelect == false) {
+							objects.get(index).SetSelect(true);
+							objects.get(index).DrawRects();
+							getChildren().addAll(objects.get(index).GetRects());
+						}
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	private Point2D ChoosePort(Point2D point, int index) {
@@ -102,11 +149,12 @@ public class CanvasPanel extends Pane {
 					objects.get(i).DrawRects();
 					getChildren().addAll(objects.get(i).GetRects());
 				} else if (i != check && objects.get(i).GetSelect() == true) {
-					if (objects.get(i).GetSelect() == true) {
-						objects.get(i).SetSelect(false);
-						getChildren().removeAll(objects.get(i).GetRects());
-					}
+					objects.get(i).SetSelect(false);
+					getChildren().removeAll(objects.get(i).GetRects());
 				}
+			}
+			if (nodes.size() != 0) {
+				CheckifinGroup(check);
 			}
 		} else {
 			for (int i = 0; i < objects.size(); i++) {
@@ -126,6 +174,7 @@ public class CanvasPanel extends Pane {
 			if (newBasic != null) {
 				newBasic.SetOrigin(pos);
 				CanvasPanel.this.getChildren().addAll(newBasic.GetShape());
+				newBasic.SetDepth(99 - objects.size());
 				objects.add(newBasic);
 				ResetObj();
 			}
@@ -150,13 +199,15 @@ public class CanvasPanel extends Pane {
 
 			if (objIndex == 0) {
 				SelectSingle(pos);
-				range = new Rectangle(0, 0);
-				range.setFill(Color.TRANSPARENT);
-				range.setStroke(Color.GRAY);
-				range.setX(pos.getX());
-				range.setY(pos.getY());
-				rangeOrigin = pos;
-				getChildren().add(range);
+				if (CheckifInside(pos) == -1) {
+					range = new Rectangle(0, 0);
+					range.setFill(Color.TRANSPARENT);
+					range.setStroke(Color.GRAY);
+					range.setX(pos.getX());
+					range.setY(pos.getY());
+					rangeOrigin = pos;
+					getChildren().add(range);
+				}
 			}
 		}
 	};
@@ -171,7 +222,7 @@ public class CanvasPanel extends Pane {
 				newLine.SetDest(pos, portIndex);
 			}
 
-			if (objIndex == 0) {
+			if (objIndex == 0 && range != null) {
 				double width = pos.getX() - rangeOrigin.getX();
 				double height = pos.getY() - rangeOrigin.getY();
 
@@ -188,6 +239,7 @@ public class CanvasPanel extends Pane {
 					range.setHeight((-1) * height);
 					range.setY(pos.getY());
 				}
+
 			}
 		}
 	};
@@ -205,13 +257,18 @@ public class CanvasPanel extends Pane {
 					getChildren().removeAll(newLine.GetShape());
 				}
 			}
-			if (objIndex == 0) {
+			if (objIndex == 0 && range != null) {
 				for (int i = 0; i < objects.size(); i++) {
-					if (range.getBoundsInParent().intersects(objects.get(i).GetBound().getBoundsInParent())) {
-						
+					if (range.getBoundsInParent().contains(objects.get(i).GetBound().getBoundsInParent())) {
+						if (objects.get(i).GetSelect() == false) {
+							objects.get(i).SetSelect(true);
+							objects.get(i).DrawRects();
+							getChildren().addAll(objects.get(i).GetRects());
+						}
 					}
 				}
 				getChildren().remove(range);
+				range = null;
 			}
 			ResetObj();
 		}
