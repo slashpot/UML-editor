@@ -13,4 +13,5 @@ public class GenLine extends LineObject {
 		shapes[0] = line;
 		return shapes;
 	}
+
 }

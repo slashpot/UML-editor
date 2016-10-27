@@ -82,7 +82,7 @@ public class FuncMenu extends MenuBar {
 					for (int i = 0; i < data.size(); i++) {
 						int index = data.get(i);
 						objects.get(index).SetSelect(false);
-						canvaspane.getChildren().removeAll(objects.get(index).GetRects());
+						objects.get(index).SetPortsVisible(false);
 					}
 					canvaspane.RemoveNode(node);
 					break;

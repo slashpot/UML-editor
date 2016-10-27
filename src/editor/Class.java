@@ -15,17 +15,29 @@ public class Class extends BasicObject {
 	private Line middle;
 
 	public Class() {
-		shapes = new Shape[4];
+		shapes = new Shape[8];
 		width = 100;
 		height = 100;
 	}
 
 	protected void SetPort() {
-		ports = new Point2D[4];
 		ports[0] = new Point2D(origin.getX() + width / 2, origin.getY());
 		ports[1] = new Point2D(origin.getX() + width, origin.getY() + height / 2);
 		ports[2] = new Point2D(origin.getX() + width / 2, origin.getY() + height);
 		ports[3] = new Point2D(origin.getX(), origin.getY() + height / 2);
+		
+		for (int i = 0; i < 4; i++) {
+			rectports[i].setX(ports[i].getX() - 2.5);
+			rectports[i].setY(ports[i].getY() - 2.5);
+			rectports[i].setWidth(5);
+			rectports[i].setHeight(5);
+			rectports[i].setVisible(false);
+		}
+		
+		shapes[4] = rectports[0];
+		shapes[5] = rectports[1];
+		shapes[6] = rectports[2];
+		shapes[7] = rectports[3];
 	}
 
 	public Shape[] GetShape() {
@@ -48,10 +60,4 @@ public class Class extends BasicObject {
 		
 		return shapes;
 	}
-
-	@Override
-	public Shape GetBound() {
-		return rect;
-	}
-
 }

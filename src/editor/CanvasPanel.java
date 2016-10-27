@@ -15,17 +15,14 @@ import javafx.scene.shape.Rectangle;
 
 public class CanvasPanel extends Pane {
 	private ArrayList<BasicObject> objects = new ArrayList<BasicObject>();
+	private ArrayList<LineObject> lines = new ArrayList<LineObject>();
 	private ArrayList<CompositeNode> nodes = new ArrayList<CompositeNode>();
+
+	private int objIndex = -1;
 	private LineObject newLine;
 	private BasicObject newBasic;
-	private Point2D lineOrigin;
-	private Point2D lineDest;
 	private Rectangle range;
 	private Point2D rangeOrigin;
-	private int objIndex = -1;
-	private int originIndex = -1;
-	private int destIndex = -1;
-	private int portIndex = -1;
 
 	public CanvasPanel() {
 		setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -89,7 +86,8 @@ public class CanvasPanel extends Pane {
 		int object = -1;
 		int depth = 100;
 		for (int i = 0; i < objects.size(); i++) {
-			if (objects.get(i).GetBound().contains(point) == true) {
+			if (objects.get(i).GetBound().getBoundsInParent().contains(point) == true) {
+				// range.getBoundsInParent().contains(objects.get(i).GetBound().getBoundsInParent())
 				if (objects.get(i).GetDepth() < depth) {
 					object = i;
 					depth = objects.get(i).GetDepth();
@@ -113,8 +111,7 @@ public class CanvasPanel extends Pane {
 						int index = data.get(j);
 						if (objects.get(index).isSelect == false) {
 							objects.get(index).SetSelect(true);
-							objects.get(index).DrawRects();
-							getChildren().addAll(objects.get(index).GetRects());
+							objects.get(index).SetPortsVisible(true);
 						}
 					}
 					break;
@@ -123,17 +120,15 @@ public class CanvasPanel extends Pane {
 		}
 	}
 
-	private Point2D ChoosePort(Point2D point, int index) {
+	private int ChoosePort(Point2D point, int index) {
 		Point2D[] ports = objects.get(index).GetPorts();
-		Point2D choose = ports[0];
+		int choose = 0;
 		double min = point.distance(ports[0]);
-		portIndex = 0;
 
 		for (int j = 1; j < 4; j++) {
 			if (point.distance(ports[j]) < min) {
 				min = point.distance(ports[j]);
-				choose = ports[j];
-				portIndex = j;
+				choose = j;
 			}
 		}
 		return choose;
@@ -146,11 +141,10 @@ public class CanvasPanel extends Pane {
 			for (int i = 0; i < objects.size(); i++) {
 				if (i == check && objects.get(i).GetSelect() == false) {
 					objects.get(i).SetSelect(true);
-					objects.get(i).DrawRects();
-					getChildren().addAll(objects.get(i).GetRects());
+					objects.get(i).SetPortsVisible(true);
 				} else if (i != check && objects.get(i).GetSelect() == true) {
 					objects.get(i).SetSelect(false);
-					getChildren().removeAll(objects.get(i).GetRects());
+					objects.get(i).SetPortsVisible(false);
 				}
 			}
 			if (nodes.size() != 0) {
@@ -160,7 +154,7 @@ public class CanvasPanel extends Pane {
 			for (int i = 0; i < objects.size(); i++) {
 				if (objects.get(i).GetSelect() == true) {
 					objects.get(i).SetSelect(false);
-					getChildren().removeAll(objects.get(i).GetRects());
+					objects.get(i).SetPortsVisible(false);
 				}
 			}
 		}
@@ -173,7 +167,7 @@ public class CanvasPanel extends Pane {
 
 			if (newBasic != null) {
 				newBasic.SetOrigin(pos);
-				CanvasPanel.this.getChildren().addAll(newBasic.GetShape());
+				getChildren().addAll(newBasic.GetShape());
 				newBasic.SetDepth(99 - objects.size());
 				objects.add(newBasic);
 				ResetObj();
@@ -186,19 +180,22 @@ public class CanvasPanel extends Pane {
 		public void handle(MouseEvent event) {
 			Point2D pos = new Point2D(event.getX(), event.getY());
 			if (newLine != null) {
-				originIndex = CheckifInside(pos);
-				if (originIndex != -1) {
-					lineOrigin = ChoosePort(pos, originIndex);
-					newLine.SetOrigin(lineOrigin);
-					newLine.SetDest(pos, portIndex);
+				// check if in an object
+				int startObject = CheckifInside(pos);
+				if (startObject != -1) {
+					int startPort = ChoosePort(pos, startObject);
+					newLine.SetStartPort(startObject, startPort);
+					newLine.SetOrigin(objects.get(startObject).GetPorts()[startPort]);
+					newLine.SetDest(pos);
 					getChildren().addAll(newLine.GetShape());
-				} else {
-					lineOrigin = null;
 				}
 			}
 
 			if (objIndex == 0) {
+				// check if select a single basic object
 				SelectSingle(pos);
+
+				// doesn't select a single basic object
 				if (CheckifInside(pos) == -1) {
 					range = new Rectangle(0, 0);
 					range.setFill(Color.TRANSPARENT);
@@ -207,6 +204,14 @@ public class CanvasPanel extends Pane {
 					range.setY(pos.getY());
 					rangeOrigin = pos;
 					getChildren().add(range);
+				}
+				// does select object and set translate
+				else {
+					for (BasicObject object : objects) {
+						if (object.GetSelect() == true) {
+							object.SetOldTranslate(pos);
+						}
+					}
 				}
 			}
 		}
@@ -218,10 +223,17 @@ public class CanvasPanel extends Pane {
 		public void handle(MouseEvent event) {
 			Point2D pos = new Point2D(event.getX(), event.getY());
 
-			if (newLine != null && lineOrigin != null) {
-				newLine.SetDest(pos, portIndex);
+			// restrict mouse position
+			if (pos.getX() < 0 || pos.getY() < 0) {
+				return;
 			}
 
+			// drag line destination
+			if (newLine != null && newLine.GetOrigin() != null) {
+				newLine.SetDest(pos);
+			}
+
+			// draw select rectangle
 			if (objIndex == 0 && range != null) {
 				double width = pos.getX() - rangeOrigin.getX();
 				double height = pos.getY() - rangeOrigin.getY();
@@ -239,7 +251,21 @@ public class CanvasPanel extends Pane {
 					range.setHeight((-1) * height);
 					range.setY(pos.getY());
 				}
+			}
 
+			if (objIndex == 0) {
+				// move selected objects
+				for (BasicObject object : objects) {
+					if (object.GetSelect() == true) {
+						object.Move(pos);
+					}
+				}
+
+				// redraw lines
+				for (LineObject line : lines) {
+					line.SetOrigin(objects.get(line.GetStartObject()).GetPorts()[line.GetStartPort()]);
+					line.SetDest(objects.get(line.GetEndObject()).GetPorts()[line.GetEndPort()]);
+				}
 			}
 		}
 	};
@@ -247,30 +273,33 @@ public class CanvasPanel extends Pane {
 	private EventHandler<MouseEvent> ReleaseEvent = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent event) {
-			if (newLine != null && lineOrigin != null) {
-				Point2D pos = new Point2D(event.getX(), event.getY());
-				destIndex = CheckifInside(pos);
-				if (destIndex != -1 && destIndex != originIndex) {
-					lineDest = ChoosePort(pos, destIndex);
-					newLine.SetDest(lineDest, portIndex);
+			Point2D pos = new Point2D(event.getX(), event.getY());
+			if (newLine != null && newLine.GetOrigin() != null) {
+				int endObject = CheckifInside(pos);
+				if (endObject != -1 && endObject != newLine.GetStartObject()) {
+					int endPort = ChoosePort(pos, endObject);
+					newLine.SetEndPort(endObject, endPort);
+					newLine.SetDest(objects.get(endObject).GetPorts()[endPort]);
+					lines.add(newLine);
 				} else {
 					getChildren().removeAll(newLine.GetShape());
 				}
+
+				// reset line object
+				ResetObj();
 			}
 			if (objIndex == 0 && range != null) {
 				for (int i = 0; i < objects.size(); i++) {
 					if (range.getBoundsInParent().contains(objects.get(i).GetBound().getBoundsInParent())) {
 						if (objects.get(i).GetSelect() == false) {
 							objects.get(i).SetSelect(true);
-							objects.get(i).DrawRects();
-							getChildren().addAll(objects.get(i).GetRects());
+							objects.get(i).SetPortsVisible(true);
 						}
 					}
 				}
 				getChildren().remove(range);
 				range = null;
 			}
-			ResetObj();
 		}
 	};
 }

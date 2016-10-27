@@ -9,14 +9,14 @@ public abstract class Object {
 	protected Shape[] shapes;
 
 	public Object() {
-		
+
 	}
 
 	public int GetDepth() {
 		return depth;
 	}
-	
-	public void SetDepth(int depth){
+
+	public void SetDepth(int depth) {
 		this.depth = depth;
 	}
 
