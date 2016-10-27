@@ -8,11 +8,10 @@ import javafx.scene.text.Text;
 public abstract class BasicObject extends Object {
 	protected int width;
 	protected int height;
-	protected Shape shape;
 	protected Point2D ports[] = new Point2D[4];
 	protected Point2D oldPorts[];
-	protected Text name;
 	protected Rectangle rectports[] = new Rectangle[4];
+	protected Text name;
 	protected boolean isSelect = false;
 
 	// used for move object
@@ -22,6 +21,7 @@ public abstract class BasicObject extends Object {
 	private double oldTranslateY;
 
 	public BasicObject() {
+		// initialize port's rectangle
 		for (int i = 0; i < 4; i++) {
 			rectports[i] = new Rectangle();
 		}
@@ -44,7 +44,8 @@ public abstract class BasicObject extends Object {
 	public boolean GetSelect() {
 		return isSelect;
 	}
-
+	
+	// store old translate before move objects
 	public void SetOldTranslate(Point2D pos) {
 		oldPosX = pos.getX();
 		oldPosY = pos.getY();
@@ -71,6 +72,7 @@ public abstract class BasicObject extends Object {
 
 	}
 	
+	// set new port positions after move
 	public void SetNewPorts(Point2D pos){
 		double offsetX = pos.getX() - oldPosX;
 		double offsetY = pos.getY() - oldPosY;
@@ -78,7 +80,8 @@ public abstract class BasicObject extends Object {
 			ports[i] = new Point2D(ports[i].getX()+offsetX,ports[i].getY()+offsetY);
 		}
 	}
-
+	
+	// get outside bound 
 	public Shape GetBound() {
 		return shapes[0];
 	}

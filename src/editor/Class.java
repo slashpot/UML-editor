@@ -21,11 +21,13 @@ public class Class extends BasicObject {
 	}
 
 	protected void SetPort() {
+		// set port's position
 		ports[0] = new Point2D(origin.getX() + width / 2, origin.getY());
 		ports[1] = new Point2D(origin.getX() + width, origin.getY() + height / 2);
 		ports[2] = new Point2D(origin.getX() + width / 2, origin.getY() + height);
 		ports[3] = new Point2D(origin.getX(), origin.getY() + height / 2);
 		
+		// set port's rectangle
 		for (int i = 0; i < 4; i++) {
 			rectports[i].setX(ports[i].getX() - 2.5);
 			rectports[i].setY(ports[i].getY() - 2.5);
@@ -34,12 +36,14 @@ public class Class extends BasicObject {
 			rectports[i].setVisible(false);
 		}
 		
+		// add port rectangles to shapes
 		shapes[4] = rectports[0];
 		shapes[5] = rectports[1];
 		shapes[6] = rectports[2];
 		shapes[7] = rectports[3];
 	}
 
+	// get all shapes
 	public Shape[] GetShape() {
 		SetPort();
 		name = new Text(origin.getX() + width / 4.5, origin.getY() + height / 4, "Name");

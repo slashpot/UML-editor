@@ -20,11 +20,13 @@ public class UseCase extends BasicObject {
 	}
 
 	protected void SetPort() {
+		// set port's position
 		ports[0] = new Point2D(origin.getX() + width, origin.getY() + height * 2);
 		ports[1] = new Point2D(origin.getX() + width * 2, origin.getY() + height);
 		ports[2] = new Point2D(origin.getX() + width, origin.getY());
 		ports[3] = new Point2D(origin.getX(), origin.getY() + height);
-		
+
+		// set port's rectangle
 		for (int i = 0; i < 4; i++) {
 			rectports[i].setX(ports[i].getX() - 2.5);
 			rectports[i].setY(ports[i].getY() - 2.5);
@@ -32,7 +34,8 @@ public class UseCase extends BasicObject {
 			rectports[i].setHeight(5);
 			rectports[i].setVisible(false);
 		}
-		
+
+		// add port rectangles to shapes
 		shapes[2] = rectports[0];
 		shapes[3] = rectports[1];
 		shapes[4] = rectports[2];
@@ -58,7 +61,7 @@ public class UseCase extends BasicObject {
 		// add all shapes
 		shapes[0] = ellipse;
 		shapes[1] = name;
-		
+
 		return shapes;
 	}
 }
