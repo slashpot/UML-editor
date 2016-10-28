@@ -74,6 +74,11 @@ public class CanvasPanel extends Pane {
 			newBasic = null;
 			break;
 
+		case 3:
+			newLine = new CompositionLine();
+			newBasic = null;
+			break;
+
 		case 4:
 			newBasic = new Class();
 			newLine = null;
@@ -108,6 +113,7 @@ public class CanvasPanel extends Pane {
 
 	// check if object is in any composite group
 	private void CheckifinGroup(int object) {
+		boolean isSelected = false;
 		for (int node = nodes.size() - 1; node >= 0; node--) {
 			// store data inside node
 			ArrayList<Integer> data = nodes.get(node).GetData();
@@ -123,11 +129,13 @@ public class CanvasPanel extends Pane {
 							objects.get(index).SetPortsVisible(true);
 						}
 					}
-
 					// doesn't need to check anymore
+					isSelected = true;
 					break;
 				}
 			}
+			if (isSelected == true)
+				break;
 		}
 	}
 
@@ -181,9 +189,9 @@ public class CanvasPanel extends Pane {
 			}
 		}
 	}
-	
+
 	// select objects with multiple select
-	private void SelectMultiple(){
+	private void SelectMultiple() {
 		// if mutiple selection rectangle is created
 		if (functionIndex == 0 && range != null) {
 			// select every objects in rectangle
@@ -230,8 +238,8 @@ public class CanvasPanel extends Pane {
 			}
 		}
 	}
-	
-	private void SetLineEndPoint(Point2D mouse){
+
+	private void SetLineEndPoint(Point2D mouse) {
 		// if newLine has start point
 		if (newLine != null && newLine.GetOrigin() != null) {
 			// check if mouse is in an object
@@ -242,8 +250,8 @@ public class CanvasPanel extends Pane {
 				newLine.SetEndPort(endObject, endPort);
 				newLine.SetDest(objects.get(endObject).GetPorts()[endPort]);
 				lines.add(newLine);
-			} 
-			//else remove current line
+			}
+			// else remove current line
 			else {
 				getChildren().removeAll(newLine.GetShape());
 			}
@@ -280,8 +288,8 @@ public class CanvasPanel extends Pane {
 			}
 		}
 	}
-	
-	private void DrawSelectionRange(Point2D mouse){
+
+	private void DrawSelectionRange(Point2D mouse) {
 		// draw select rectangle
 		if (functionIndex == 0 && range != null) {
 			double width = mouse.getX() - rangeOrigin.getX();
@@ -302,8 +310,8 @@ public class CanvasPanel extends Pane {
 			}
 		}
 	}
-	
-	private void MoveObjects(Point2D mouse){
+
+	private void MoveObjects(Point2D mouse) {
 		if (functionIndex == 0) {
 			// move selected objects
 			for (BasicObject object : objects) {

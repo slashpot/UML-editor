@@ -15,9 +15,11 @@ public class Class extends BasicObject {
 	private Line middle;
 
 	public Class() {
+		name = new Text();
+		rect = new Rectangle();
 		shapes = new Shape[8];
-		width = 100;
-		height = 100;
+		width = 90;
+		height = 90;
 	}
 
 	protected void SetPort() {
@@ -46,14 +48,22 @@ public class Class extends BasicObject {
 	// get all shapes
 	public Shape[] GetShape() {
 		SetPort();
-		name = new Text(origin.getX() + width / 4.5, origin.getY() + height / 4, "Name");
-		name.setFont(new Font(20));
-		name.setTextAlignment(TextAlignment.JUSTIFY);
 		
+		name.setX(origin.getX() + width / 4.5);
+		name.setY(origin.getY() + height/4.5);
+		name.setText("Name");
+		name.setFont(new Font(17));
+		name.setTextAlignment(TextAlignment.CENTER);
+
 		top = new Line(origin.getX(), origin.getY() + height / 3, origin.getX() + width, origin.getY() + height / 3);
 		middle = new Line(origin.getX(), origin.getY() + height / 3 * 2, origin.getX() + width, origin.getY() + height / 3 * 2);
+		top.setStroke(Color.GRAY);
+		middle.setStroke(Color.GRAY);
 		
-		rect = new Rectangle(origin.getX(), origin.getY(), width, height);
+		rect.setX(origin.getX());
+		rect.setY(origin.getY());
+		rect.setWidth(width);
+		rect.setHeight(height);
 		rect.setFill(Color.WHITE);
 		rect.setStroke(Color.GRAY);
 		

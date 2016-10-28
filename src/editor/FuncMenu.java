@@ -9,6 +9,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 public class FuncMenu extends MenuBar {
+	// used for store CanvasPanel objects
 	private CanvasPanel canvaspane;
 	private ArrayList<BasicObject> objects;
 	private ArrayList<CompositeNode> nodes;
@@ -19,6 +20,7 @@ public class FuncMenu extends MenuBar {
 
 	private MenuItem group;
 	private MenuItem ungroup;
+	private MenuItem changeName;
 
 	public FuncMenu() {
 		SetMenus();
@@ -39,6 +41,10 @@ public class FuncMenu extends MenuBar {
 		ungroup = new MenuItem("UnGroup");
 		menuEdit.getItems().add(ungroup);
 		ungroup.setOnAction(UnGroupEvent);
+
+		changeName = new MenuItem("Change Name");
+		menuEdit.getItems().add(changeName);
+		changeName.setOnAction(ChangeNameEvent);
 	}
 
 	private void AddMenus() {
@@ -87,6 +93,25 @@ public class FuncMenu extends MenuBar {
 					canvaspane.RemoveNode(node);
 					break;
 				}
+			}
+		}
+	};
+
+	private EventHandler<ActionEvent> ChangeNameEvent = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			objects = canvaspane.GetObjects();
+			int number = 0;
+			int index = -1;
+			for (int i = 0; i < objects.size(); i++) {
+				if (objects.get(i).GetSelect() == true) {
+					number++;
+					index = i;
+				}
+			}
+
+			if (number == 1) {
+				objects.get(index).SetName();
 			}
 		}
 	};

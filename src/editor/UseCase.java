@@ -46,11 +46,11 @@ public class UseCase extends BasicObject {
 	public Shape[] GetShape() {
 		SetPort();
 		// set object text
-		name.setX(origin.getX() + width / 2);
+		name.setX(origin.getX() + width / 1.7);
 		name.setY(origin.getY() + height * 1.1);
 		name.setText("Name");
-		name.setFont(new Font(20));
-		name.setTextAlignment(TextAlignment.JUSTIFY);
+		name.setFont(new Font(17));
+		name.setTextAlignment(TextAlignment.CENTER);
 		// set ellipse
 		ellipse.setCenterX(origin.getX() + width);
 		ellipse.setCenterY(origin.getY() + height);

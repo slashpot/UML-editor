@@ -27,7 +27,7 @@ public class MainUI extends Application {
 		root.setTop(menuBar);
 		root.setLeft(buttonpane);
 		root.setCenter(canvaspane);
-		scene = new Scene(root, 800, 520);
+		scene = new Scene(root, 1100, 735);
 	}
 
 	@Override

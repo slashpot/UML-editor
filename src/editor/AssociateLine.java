@@ -13,5 +13,4 @@ public class AssociateLine extends LineObject {
 		shapes[0] = line;
 		return shapes;
 	}
-
 }
