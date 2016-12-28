@@ -4,11 +4,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
-public class GenLine extends LineObject {
+public class GeneralizationLine extends LineObject {
 	private Polygon triangle = new Polygon();
 	private double length = 5;
 
-	public GenLine() {
+	public GeneralizationLine() {
 		shapes = new Shape[2];
 	}
 

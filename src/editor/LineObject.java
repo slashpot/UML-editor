@@ -2,7 +2,6 @@ package editor;
 
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
 
 public abstract class LineObject extends Object {
 	protected Point2D dest = origin;

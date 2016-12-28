@@ -6,10 +6,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class MainUI extends Application {
-	private FuncMenu menuBar;
 	private BorderPane root;
-	private ButtonPanel buttonpane;
-	private CanvasPanel canvaspane;
 	private Scene scene;
 
 	public static void main(String[] args) {
@@ -18,15 +15,9 @@ public class MainUI extends Application {
 
 	public void init() throws Exception {
 		root = new BorderPane();
-		canvaspane = new CanvasPanel();
-		buttonpane = new ButtonPanel();
-		buttonpane.SetCanvasPane(canvaspane);
-		menuBar = new FuncMenu();
-		menuBar.SetCanvasPane(canvaspane);
-
-		root.setTop(menuBar);
-		root.setLeft(buttonpane);
-		root.setCenter(canvaspane);
+		root.setTop(FunctionMenu.getInstance());
+		root.setLeft(ButtonPanel.getInstance());
+		root.setCenter(Canvas.getInstance());
 		scene = new Scene(root, 1100, 735);
 	}
 
