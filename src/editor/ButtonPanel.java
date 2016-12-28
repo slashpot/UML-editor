@@ -1,19 +1,23 @@
 package editor;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.GridPane;
 
 public final class ButtonPanel extends GridPane{
 	private static final ButtonPanel INSTANCE = new ButtonPanel();
 	
-	private int buttonNumbers = 6;
-	private FunctionButton buttons[] = new FunctionButton[buttonNumbers];
-	private Image icons[] = new Image[buttonNumbers];
 	private ToggleGroup group = new ToggleGroup();
-	private String names[] = { "select", "association line", "generalization line", "composition line", "class",
-			"use case" };
+	
+	private SelectButton selectButton = new SelectButton();
+	private AssociationLineButton associationLineButton = new AssociationLineButton();
+	private GeneralizationLineButton generalizationLineButton = new GeneralizationLineButton();
+	private CompositionLineButton compositionLineButton = new CompositionLineButton();
+	private ClassButton classButton = new ClassButton();
+	private UseCaseButton useCaseButton = new UseCaseButton();
 	
 	private ButtonPanel(){
 		setHgap(10);
@@ -23,16 +27,29 @@ public final class ButtonPanel extends GridPane{
 	}
 	
 	private void SetButtons() {
-		for (int i = 0; i < buttonNumbers; i++) {
-			String path = "editor/image/" + names[i] + ".png";
-			icons[i] = new Image(path);
-			buttons[i] = new FunctionButton(names[i], icons[i]);
-			// set function index
-			buttons[i].setUserData(i);
-			buttons[i].setToggleGroup(group);
-			add(buttons[i], 0, i);
-		}
+		add(selectButton, 0, 0);
+		add(associationLineButton, 0, 1);
+		add(generalizationLineButton, 0, 2);
+		add(compositionLineButton, 0, 3);
+		
+		classButton.setUserData(classButton.GetMode());
+		classButton.setToggleGroup(group);
+		add(classButton, 0, 4);
+		
+		add(useCaseButton, 0, 5);
+		
+		group.selectedToggleProperty().addListener(ButtonListener);
 	}
+	
+	private ChangeListener<Toggle> ButtonListener = new ChangeListener<Toggle>() {
+		@Override
+		public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+			if (newValue != null) {
+				Mode SelectMode = (Mode) newValue.getUserData();
+				Canvas.getInstance().SetMode(SelectMode);
+			}
+		}
+	};
 	
 	public static ButtonPanel getInstance(){
 		return INSTANCE;

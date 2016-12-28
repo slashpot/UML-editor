@@ -5,11 +5,12 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class FunctionButton extends ToggleButton{
-	private Tooltip tip;
-
-	public FunctionButton(String name, Image icon) {
-		tip = new Tooltip(name);
+public class SelectButton extends ToggleButton{
+	private String name = "Select";
+	private Tooltip tip = new Tooltip(name);
+	private Image icon = new Image("editor/image/select.png");
+	
+	public SelectButton(){
 		setGraphic(new ImageView(icon));
 		setTooltip(tip);
 		setId(name);
