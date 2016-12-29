@@ -1,4 +1,4 @@
-package editor;
+package shape;
 
 import javafx.scene.shape.Shape;
 

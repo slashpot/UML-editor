@@ -1,4 +1,4 @@
-package editor;
+package mode;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -10,7 +10,7 @@ public abstract class Mode {
 	protected  EventHandler<MouseEvent> ReleaseEvent;
 	
 	public Mode(){
-		
+		SetEvent();
 	}
 	
 	public EventHandler<MouseEvent> GetClickEvent(){
@@ -28,4 +28,6 @@ public abstract class Mode {
 	public EventHandler<MouseEvent> GetReleaseEvent(){
 		return ReleaseEvent;
 	}
+	
+	public abstract void SetEvent();
 }

@@ -1,4 +1,4 @@
-package editor;
+package ui;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;

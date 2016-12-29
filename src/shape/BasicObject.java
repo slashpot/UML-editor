@@ -1,4 +1,4 @@
-package editor;
+package shape;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -41,9 +41,24 @@ public abstract class BasicObject extends Object {
 			rectports[i] = new Rectangle();
 		}
 	}
-
+	
 	public Point2D[] GetPorts() {
 		return ports;
+	}
+	
+	// choose the index of closest port to connect line
+	public int ChoosePort(Point2D point) {
+		int choose = 0;
+		double min = point.distance(ports[0]);
+
+		// choose the port which has minimum distance
+		for (int j = 1; j < 4; j++) {
+			if (point.distance(ports[j]) < min) {
+				min = point.distance(ports[j]);
+				choose = j;
+			}
+		}
+		return choose;
 	}
 
 	public void SetPortsVisible(boolean set) {
