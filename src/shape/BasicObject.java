@@ -18,8 +18,8 @@ import javafx.stage.Stage;
 public abstract class BasicObject extends Object {
 	protected int width;
 	protected int height;
-	protected Point2D ports[] = new Point2D[4];
-	protected Point2D oldPorts[];
+	protected Port ports[] = new Port[4];
+	protected Port oldPorts[];
 	protected Rectangle rectports[] = new Rectangle[4];
 	protected Text name;
 	protected boolean isSelect = false;
@@ -42,7 +42,7 @@ public abstract class BasicObject extends Object {
 		}
 	}
 	
-	public Point2D[] GetPorts() {
+	public Port[] GetPorts() {
 		return ports;
 	}
 	
@@ -97,7 +97,7 @@ public abstract class BasicObject extends Object {
 			shapes[i].setTranslateY(newTranslateY);
 		}
 		for (int i = 0; i < 4; i++) {
-			ports[i] = new Point2D(oldPorts[i].getX() + offsetX, oldPorts[i].getY() + offsetY);
+			ports[i] = new Port(oldPorts[i].getX() + offsetX, oldPorts[i].getY() + offsetY);
 		}
 
 	}
@@ -107,7 +107,7 @@ public abstract class BasicObject extends Object {
 		double offsetX = pos.getX() - oldPosX;
 		double offsetY = pos.getY() - oldPosY;
 		for (int i = 0; i < 4; i++) {
-			ports[i] = new Point2D(ports[i].getX() + offsetX, ports[i].getY() + offsetY);
+			ports[i] = new Port(ports[i].getX() + offsetX, ports[i].getY() + offsetY);
 		}
 	}
 

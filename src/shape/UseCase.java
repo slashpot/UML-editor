@@ -1,6 +1,5 @@
 package shape;
 
-import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Shape;
@@ -21,10 +20,10 @@ public class UseCase extends BasicObject {
 
 	protected void SetPort() {
 		// set port's position
-		ports[0] = new Point2D(origin.getX() + width, origin.getY() + height * 2);
-		ports[1] = new Point2D(origin.getX() + width * 2, origin.getY() + height);
-		ports[2] = new Point2D(origin.getX() + width, origin.getY());
-		ports[3] = new Point2D(origin.getX(), origin.getY() + height);
+		ports[0] = new Port(origin.getX() + width, origin.getY() + height * 2);
+		ports[1] = new Port(origin.getX() + width * 2, origin.getY() + height);
+		ports[2] = new Port(origin.getX() + width, origin.getY());
+		ports[3] = new Port(origin.getX(), origin.getY() + height);
 
 		// set port's rectangle
 		for (int i = 0; i < 4; i++) {

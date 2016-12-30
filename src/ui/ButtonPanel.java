@@ -30,8 +30,8 @@ public final class ButtonPanel extends GridPane {
 	private void SetButtons() {
 		add(selectButton, 0, 0);
 
-		// associationButton.setUserData(associationButton.GetMode());
-		// associationButton.setToggleGroup(group);
+		associationButton.setUserData(associationButton.GetMode());
+		associationButton.setToggleGroup(group);
 		add(associationButton, 0, 1);
 
 		add(generalizationButton, 0, 2);
@@ -52,8 +52,8 @@ public final class ButtonPanel extends GridPane {
 		@Override
 		public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
 			if (newValue != null) {
-				Mode SelectMode = (Mode) newValue.getUserData();
-				Canvas.getInstance().SetMouseEvent(SelectMode);
+				Mode newMode = (Mode) newValue.getUserData();
+				Canvas.getInstance().SetMouseEvent(newMode);
 			}
 		}
 	};
