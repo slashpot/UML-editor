@@ -14,7 +14,7 @@ import shape.Group;
 public final class FunctionMenu extends MenuBar {
 	private static final FunctionMenu INSTANCE = new FunctionMenu();
 	private Canvas canvas = Canvas.getInstance(); 
-	private ArrayList<BasicObject> objects = canvas.GetBasicObjs();
+	private ArrayList<BasicObject> objects = canvas.getBasicObjs();
 
 	private Menu menuFile;
 	private Menu menuEdit;
@@ -113,7 +113,7 @@ public final class FunctionMenu extends MenuBar {
 			
 			for(BasicObject obj: objects){
 				if(obj.checkIfSelected() == true && obj.checkIfIsGroup() == false){
-					obj.SetName();
+					obj.setName();
 					break;
 				}
 			}

@@ -12,7 +12,7 @@ public class GeneralizationLine extends LineObject {
 		shapes = new Shape[2];
 	}
 
-	public void SetDest(Point2D point) {
+	public void setDest(Point2D point) {
 		dest = point;
 		line.setEndX(dest.getX());
 		line.setEndY(dest.getY());
@@ -20,7 +20,7 @@ public class GeneralizationLine extends LineObject {
 	}
 
 	@Override
-	public Shape[] GetShape() {
+	public Shape[] getShape() {
 		shapes[0] = line;
 		shapes[1] = triangle;
 		return shapes;

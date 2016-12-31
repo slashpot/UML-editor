@@ -21,19 +21,19 @@ public class UseCase extends BasicObject {
 	
 	@Override
 	// get outside bound
-	public Shape GetBound() {
+	public Shape getBound() {
 		return shapes[0];
 	}
 	
 	@Override
-	public Shape GetSelectedObjBound(Point2D mouse) {
+	public Shape getSelectedObjBound(Point2D mouse) {
 		if(shapes[0].getBoundsInParent().contains(mouse))
 			return shapes[0];
 		else
 			return null;
 	}
 
-	protected void SetPort() {
+	private void setPort() {
 		// set port's position
 		ports[0] = new Port(origin.getX() + width, origin.getY() + height * 2);
 		ports[1] = new Port(origin.getX() + width * 2, origin.getY() + height);
@@ -41,24 +41,19 @@ public class UseCase extends BasicObject {
 		ports[3] = new Port(origin.getX(), origin.getY() + height);
 
 		// set port's rectangle
-		for (int i = 0; i < 4; i++) {
-			ports[i].GetRectangle().setX(ports[i].getX() - 2.5);
-			ports[i].GetRectangle().setY(ports[i].getY() - 2.5);
-			ports[i].GetRectangle().setWidth(5);
-			ports[i].GetRectangle().setHeight(5);
-			ports[i].GetRectangle().setVisible(false);
-		}
+		for (int i = 0; i < 4; i++) 
+			ports[i].initializeRectangle();
 
 		// add port rectangles to shapes
-		shapes[2] = ports[0].GetRectangle();
-		shapes[3] = ports[1].GetRectangle();
-		shapes[4] = ports[2].GetRectangle();
-		shapes[5] = ports[3].GetRectangle();
+		shapes[2] = ports[0].getRectangle();
+		shapes[3] = ports[1].getRectangle();
+		shapes[4] = ports[2].getRectangle();
+		shapes[5] = ports[3].getRectangle();
 	}
 
 	@Override
-	public Shape[] GetShape() {
-		SetPort();
+	public Shape[] getShape() {
+		setPort();
 		// set object text
 		name.setX(origin.getX() + width / 1.7);
 		name.setY(origin.getY() + height * 1.1);

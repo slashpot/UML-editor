@@ -9,7 +9,7 @@ public class AssociateLine extends LineObject {
 	}
 
 	@Override
-	public Shape[] GetShape() {
+	public Shape[] getShape() {
 		shapes[0] = line;
 		return shapes;
 	}

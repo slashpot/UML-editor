@@ -34,8 +34,16 @@ public class Port{
 		double yDistance = y - point.getY();
 		return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 	}
+	
+	public void initializeRectangle() {
+		rect.setX(x - 2.5);
+		rect.setY(y - 2.5);
+		rect.setWidth(5);
+		rect.setHeight(5);
+		rect.setVisible(false);
+	}
 
-	public Rectangle GetRectangle() {
+	public Rectangle getRectangle() {
 		return rect;
 	}
 

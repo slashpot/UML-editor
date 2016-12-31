@@ -13,39 +13,39 @@ public abstract class LineObject extends Object {
 		line = new Line();
 	}
 	
-	public void SetOrigin(Point2D point) {
+	public void setOrigin(Point2D point) {
 		origin = point;
 		line.setStartX(origin.getX());
 		line.setStartY(origin.getY());
 	}
 
-	public Point2D GetOrigin() {
+	public Point2D getOrigin() {
 		return origin;
 	}
 
-	public void SetDest(Point2D point) {
+	public void setDest(Point2D point) {
 		dest = point;
 		line.setEndX(dest.getX());
 		line.setEndY(dest.getY());
 	}
 
-	public Point2D GetDest() {
+	public Point2D getDest() {
 		return dest;
 	}
 
-	public void SetStartPort(Port port) {
+	public void setStartPort(Port port) {
 		startPort = port;
 	}
 
-	public Port GetStartPort() {
+	public Port getStartPort() {
 		return startPort;
 	}
 
-	public void SetEndPort(Port port) {
+	public void setEndPort(Port port) {
 		endPort = port;
 	}
 
-	public Port GetEndPort() {
+	public Port getEndPort() {
 		return endPort;
 	}
 

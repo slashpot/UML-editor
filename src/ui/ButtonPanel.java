@@ -24,38 +24,43 @@ public final class ButtonPanel extends GridPane {
 		setHgap(10);
 		setVgap(10);
 		setPadding(new Insets(5, 3, 5, 3));
-		SetButtons();
+		setButtons();
 	}
 
-	private void SetButtons() {
-		selectButton.setUserData(selectButton.GetMode());
+	private void setButtons() {
+		selectButton.setUserData(selectButton.getMode());
 		selectButton.setToggleGroup(group);
 		add(selectButton, 0, 0);
 
-		associationButton.setUserData(associationButton.GetMode());
+		associationButton.setUserData(associationButton.getMode());
 		associationButton.setToggleGroup(group);
 		add(associationButton, 0, 1);
 
+		generalizationButton.setUserData(generalizationButton.getMode());
+		generalizationButton.setToggleGroup(group);
 		add(generalizationButton, 0, 2);
+		
+		compositionButton.setUserData(compositionButton.getMode());
+		compositionButton.setToggleGroup(group);
 		add(compositionButton, 0, 3);
 
-		classButton.setUserData(classButton.GetMode());
+		classButton.setUserData(classButton.getMode());
 		classButton.setToggleGroup(group);
 		add(classButton, 0, 4);
 
-		useCaseButton.setUserData(useCaseButton.GetMode());
+		useCaseButton.setUserData(useCaseButton.getMode());
 		useCaseButton.setToggleGroup(group);
 		add(useCaseButton, 0, 5);
 
-		group.selectedToggleProperty().addListener(ButtonListener);
+		group.selectedToggleProperty().addListener(buttonListener);
 	}
 
-	private ChangeListener<Toggle> ButtonListener = new ChangeListener<Toggle>() {
+	private ChangeListener<Toggle> buttonListener = new ChangeListener<Toggle>() {
 		@Override
 		public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
 			if (newValue != null) {
 				Mode newMode = (Mode) newValue.getUserData();
-				Canvas.getInstance().SetMouseEvent(newMode);
+				Canvas.getInstance().setMouseEvent(newMode);
 			}
 		}
 	};

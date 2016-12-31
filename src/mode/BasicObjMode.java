@@ -14,7 +14,7 @@ public abstract class BasicObjMode extends Mode{
 			public void handle(MouseEvent event) {
 				Point2D mouse = new Point2D(event.getX(), event.getY());
 				newObj();
-				canvas.AddBasicObject(mouse, newObject);
+				addBasicObject(mouse, newObject);
 			}
 		};
 		
@@ -38,6 +38,13 @@ public abstract class BasicObjMode extends Mode{
 				
 			}
 		};
+	}
+	
+	private void addBasicObject(Point2D mouse, BasicObject newObject) {
+		newObject.setOrigin(mouse);
+		canvas.getChildren().addAll(newObject.getShape());
+		newObject.setDepth(99 - objects.size());
+		objects.add(newObject);
 	}
 	
 	protected abstract void newObj();

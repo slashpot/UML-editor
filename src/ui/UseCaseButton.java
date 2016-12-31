@@ -7,7 +7,6 @@ import javafx.scene.image.ImageView;
 import mode.Mode;
 import mode.UseCaseMode;
 
-
 public class UseCaseButton extends ToggleButton{
 	private String name = "Use Case";
 	private Tooltip tip = new Tooltip(name);
@@ -20,7 +19,7 @@ public class UseCaseButton extends ToggleButton{
 		setId(name);
 	}
 	
-	public Mode GetMode(){
+	public Mode getMode(){
 		return mode;
 	}
 }

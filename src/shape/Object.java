@@ -12,21 +12,21 @@ public abstract class Object {
 
 	}
 
-	public int GetDepth() {
+	public int getDepth() {
 		return depth;
 	}
 
-	public void SetDepth(int depth) {
+	public void setDepth(int depth) {
 		this.depth = depth;
 	}
 
-	public void SetOrigin(Point2D point) {
+	public void setOrigin(Point2D point) {
 		origin = point;
 	}
 
-	public Point2D GetOrigin() {
+	public Point2D getOrigin() {
 		return origin;
 	}
 
-	public abstract Shape[] GetShape();
+	public abstract Shape[] getShape();
 }

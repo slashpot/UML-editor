@@ -19,7 +19,7 @@ public class AssociationButton extends ToggleButton{
 		setId(name);
 	}
 	
-	public Mode GetMode(){
+	public Mode getMode(){
 		return mode;
 	}
 }

@@ -22,26 +22,26 @@ public class Group extends BasicObject {
 		Canvas.getInstance().getChildren().add(bound);
 	}
 	
-	public void SetPortsVisible(boolean set) {
+	public void setPortsVisible(boolean set) {
 		for(BasicObject obj: members){
-			obj.SetPortsVisible(set);
+			obj.setPortsVisible(set);
 		}
 	}
 	
 	// store old translate before move objects
-	public void SetOldTranslate(Point2D pos) {
+	public void setOldTranslate(Point2D pos) {
 		oldPosX = pos.getX();
 		oldPosY = pos.getY();
-		oldTranslateX = GetBound().getTranslateX();
-		oldTranslateY = GetBound().getTranslateY();
+		oldTranslateX = getBound().getTranslateX();
+		oldTranslateY = getBound().getTranslateY();
 		
 		for(BasicObject obj: members){
-			obj.SetOldTranslate(pos);
+			obj.setOldTranslate(pos);
 		}
 	}
 	
 	// move while dragging
-	public void Move(Point2D pos) {
+	public void move(Point2D pos) {
 		double offsetX = pos.getX() - oldPosX;
 		double offsetY = pos.getY() - oldPosY;
 		double newTranslateX = oldTranslateX + offsetX;
@@ -51,19 +51,19 @@ public class Group extends BasicObject {
 		bound.setTranslateY(newTranslateY);
 
 		for(BasicObject obj: members){
-			obj.Move(pos);
+			obj.move(pos);
 		}
 	}
 
 	private void calculateBound() {
-		Bounds first = members.get(0).GetBound().getBoundsInParent();
+		Bounds first = members.get(0).getBound().getBoundsInParent();
 		double minX = first.getMinX();
 		double minY = first.getMinY();
 		double maxX = first.getMaxX();
 		double maxY = first.getMaxY();
 		
 		for(BasicObject obj: members){
-			Bounds objBound = obj.GetBound().getBoundsInParent(); 
+			Bounds objBound = obj.getBound().getBoundsInParent(); 
 			
 			if(objBound.getMinX() < minX)
 				minX = objBound.getMinX();
@@ -95,10 +95,10 @@ public class Group extends BasicObject {
 		int depth = 100;
 
 		for (int i = 0; i < members.size(); i++) {
-			if (members.get(i).GetSelectedObjBound(mouse) != null) {
-				if (members.get(i).GetDepth() < depth) {
+			if (members.get(i).getSelectedObjBound(mouse) != null) {
+				if (members.get(i).getDepth() < depth) {
 					object = members.get(i);
-					depth = object.GetDepth();
+					depth = object.getDepth();
 				}
 			}
 		}
@@ -109,46 +109,46 @@ public class Group extends BasicObject {
 			return object;
 	}
 
-	public Shape GetSelectedObjBound(Point2D mouse) {
+	public Shape getSelectedObjBound(Point2D mouse) {
 		BasicObject object = GetSelectedObj(mouse);
 
 		if (object == null)
 			return null;
 		else
-			return object.GetSelectedObjBound(mouse);
+			return object.getSelectedObjBound(mouse);
 	}
 
 	@Override
-	public Port ChoosePort(Point2D mouse) {
+	public Port choosePort(Point2D mouse) {
 		BasicObject object = GetSelectedObj(mouse);
-		return object.ChoosePort(mouse);
+		return object.choosePort(mouse);
 	}
 
 	@Override
-	public Shape GetBound() {
+	public Shape getBound() {
 		return bound;
 	}
 	
 	@Override
 	public void unGroup() {
 		Canvas.getInstance().getChildren().remove(bound);
-		ArrayList<BasicObject> objs = Canvas.getInstance().GetBasicObjs();
+		ArrayList<BasicObject> objs = Canvas.getInstance().getBasicObjs();
 		objs.addAll(members);
 		objs.remove(this);
 	}
 	
 	@Override
-	public void SetName() {
+	public void setName() {
 
 	}
 
 	@Override
-	public void ButtonClicked(ActionEvent event) {
+	public void buttonClicked(ActionEvent event) {
 
 	}
 
 	@Override
-	public Shape[] GetShape() {
+	public Shape[] getShape() {
 		return null;
 	}
 }

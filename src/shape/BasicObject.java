@@ -38,18 +38,18 @@ public abstract class BasicObject extends Object {
 		
 	}
 	
-	public Port[] GetPorts() {
+	public Port[] getPorts() {
 		return ports;
 	}
 	
 	
-	public void SetPortsVisible(boolean set) {
+	public void setPortsVisible(boolean set) {
 		for (int i = 0; i < 4; i++) {
-			ports[i].GetRectangle().setVisible(set);
+			ports[i].getRectangle().setVisible(set);
 		}
 	}
 
-	public Port ChoosePort(Point2D point) {
+	public Port choosePort(Point2D point) {
 		int choose = 0;
 		double min = ports[0].getDistance(point);
 
@@ -62,7 +62,7 @@ public abstract class BasicObject extends Object {
 		return ports[choose];
 	}
 
-	public void SetSelect(boolean bool) {
+	public void setSelect(boolean bool) {
 		isSelect = bool;
 	}
 
@@ -75,11 +75,11 @@ public abstract class BasicObject extends Object {
 	}
 
 	// store old translate before move objects
-	public void SetOldTranslate(Point2D pos) {
+	public void setOldTranslate(Point2D pos) {
 		oldPosX = pos.getX();
 		oldPosY = pos.getY();
-		oldTranslateX = GetBound().getTranslateX();
-		oldTranslateY = GetBound().getTranslateY();
+		oldTranslateX = getBound().getTranslateX();
+		oldTranslateY = getBound().getTranslateY();
 		
 		for(int i = 0; i < ports.length; i++){
 			oldPorts[i] = new Port(ports[i].getX(), ports[i].getY());
@@ -87,7 +87,7 @@ public abstract class BasicObject extends Object {
 	}
 
 	// move while dragging
-	public void Move(Point2D pos) {
+	public void move(Point2D pos) {
 		double offsetX = pos.getX() - oldPosX;
 		double offsetY = pos.getY() - oldPosY;
 		double newTranslateX = oldTranslateX + offsetX;
@@ -105,15 +105,15 @@ public abstract class BasicObject extends Object {
 	}
 	
 
-	public void SetName() {
+	public void setName() {
 		HBox hbox = new HBox();
 		hbox.setSpacing(10);
 		ok = new Button("OK");
 		ok.setPrefSize(70, 20);
-		ok.setOnAction(event -> ButtonClicked(event));
+		ok.setOnAction(event -> buttonClicked(event));
 		cancel = new Button("Cancel");
 		cancel.setPrefSize(70, 20);
-		cancel.setOnAction(event -> ButtonClicked(event));
+		cancel.setOnAction(event -> buttonClicked(event));
 		hbox.getChildren().addAll(ok, cancel);
 
 		Label label = new Label("Name: ");
@@ -135,7 +135,7 @@ public abstract class BasicObject extends Object {
 		stage.showAndWait();
 	}
 
-	public void ButtonClicked(ActionEvent event) {
+	public void buttonClicked(ActionEvent event) {
 		if (event.getSource() == ok) {
 			String text = textField.getText();
 			if (text.equals("") == false) {
@@ -147,7 +147,7 @@ public abstract class BasicObject extends Object {
 		}
 	}
 
-	public abstract Shape GetBound();
-	public abstract Shape GetSelectedObjBound(Point2D mouse);
+	public abstract Shape getBound();
+	public abstract Shape getSelectedObjBound(Point2D mouse);
 	public abstract void unGroup();
 }
