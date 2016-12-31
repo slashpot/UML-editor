@@ -1,5 +1,6 @@
 package shape;
 
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Shape;
@@ -17,6 +18,19 @@ public class UseCase extends BasicObject {
 		width = 60;
 		height = 35;
 	}
+	
+	// get outside bound
+	public Shape GetBound() {
+		return shapes[0];
+	}
+	
+	@Override
+	public Shape GetSelectedObjBound(Point2D mouse) {
+		if(shapes[0].getBoundsInParent().contains(mouse))
+			return shapes[0];
+		else
+			return null;
+	}
 
 	protected void SetPort() {
 		// set port's position
@@ -27,18 +41,18 @@ public class UseCase extends BasicObject {
 
 		// set port's rectangle
 		for (int i = 0; i < 4; i++) {
-			rectports[i].setX(ports[i].getX() - 2.5);
-			rectports[i].setY(ports[i].getY() - 2.5);
-			rectports[i].setWidth(5);
-			rectports[i].setHeight(5);
-			rectports[i].setVisible(false);
+			ports[i].GetRectangle().setX(ports[i].getX() - 2.5);
+			ports[i].GetRectangle().setY(ports[i].getY() - 2.5);
+			ports[i].GetRectangle().setWidth(5);
+			ports[i].GetRectangle().setHeight(5);
+			ports[i].GetRectangle().setVisible(false);
 		}
 
 		// add port rectangles to shapes
-		shapes[2] = rectports[0];
-		shapes[3] = rectports[1];
-		shapes[4] = rectports[2];
-		shapes[5] = rectports[3];
+		shapes[2] = ports[0].GetRectangle();
+		shapes[3] = ports[1].GetRectangle();
+		shapes[4] = ports[2].GetRectangle();
+		shapes[5] = ports[3].GetRectangle();
 	}
 
 	@Override

@@ -2,32 +2,34 @@ package mode;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import ui.Canvas;
 
 public abstract class Mode {
-	protected  EventHandler<MouseEvent> ClickEvent;
-	protected  EventHandler<MouseEvent> PressEvent;
-	protected  EventHandler<MouseEvent> DragEvent;
-	protected  EventHandler<MouseEvent> ReleaseEvent;
+	protected Canvas canvas = Canvas.getInstance();
+	protected EventHandler<MouseEvent> clickEvent;
+	protected EventHandler<MouseEvent> pressEvent;
+	protected EventHandler<MouseEvent> dragEvent;
+	protected EventHandler<MouseEvent> releaseEvent;
 	
 	public Mode(){
-		SetEvent();
+		setEvent();
 	}
 	
-	public EventHandler<MouseEvent> GetClickEvent(){
-		return ClickEvent;
+	public EventHandler<MouseEvent> getClickEvent(){
+		return clickEvent;
 	}
 	
-	public EventHandler<MouseEvent> GetPressEvent(){
-		return PressEvent;
+	public EventHandler<MouseEvent> getPressEvent(){
+		return pressEvent;
 	}
 	
-	public EventHandler<MouseEvent> GetDragEvent(){
-		return DragEvent;
+	public EventHandler<MouseEvent> getDragEvent(){
+		return dragEvent;
 	}
 	
-	public EventHandler<MouseEvent> GetReleaseEvent(){
-		return ReleaseEvent;
+	public EventHandler<MouseEvent> getReleaseEvent(){
+		return releaseEvent;
 	}
 	
-	public abstract void SetEvent();
+	protected abstract void setEvent();
 }

@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -20,7 +19,6 @@ public abstract class BasicObject extends Object {
 	protected int height;
 	protected Port ports[] = new Port[4];
 	protected Port oldPorts[];
-	protected Rectangle rectports[] = new Rectangle[4];
 	protected Text name;
 	protected boolean isSelect = false;
 
@@ -36,35 +34,31 @@ public abstract class BasicObject extends Object {
 	private Stage stage;
 
 	public BasicObject() {
-		// initialize port's rectangle
-		for (int i = 0; i < 4; i++) {
-			rectports[i] = new Rectangle();
-		}
+		
 	}
 	
 	public Port[] GetPorts() {
 		return ports;
 	}
 	
-	// choose the index of closest port to connect line
-	public int ChoosePort(Point2D point) {
+	
+	public void SetPortsVisible(boolean set) {
+		for (int i = 0; i < 4; i++) {
+			ports[i].GetRectangle().setVisible(set);
+		}
+	}
+
+	public Port ChoosePort(Point2D point) {
 		int choose = 0;
 		double min = point.distance(ports[0]);
 
-		// choose the port which has minimum distance
 		for (int j = 1; j < 4; j++) {
 			if (point.distance(ports[j]) < min) {
 				min = point.distance(ports[j]);
 				choose = j;
 			}
 		}
-		return choose;
-	}
-
-	public void SetPortsVisible(boolean set) {
-		for (int i = 0; i < 4; i++) {
-			rectports[i].setVisible(set);
-		}
+		return ports[choose];
 	}
 
 	public void SetSelect(boolean bool) {
@@ -111,11 +105,6 @@ public abstract class BasicObject extends Object {
 		}
 	}
 
-	// get outside bound
-	public Shape GetBound() {
-		return shapes[0];
-	}
-
 	public void SetName() {
 		HBox hbox = new HBox();
 		hbox.setSpacing(10);
@@ -158,5 +147,7 @@ public abstract class BasicObject extends Object {
 		}
 	}
 
-	protected abstract void SetPort();
+
+	public abstract Shape GetBound();
+	public abstract Shape GetSelectedObjBound(Point2D mouse);
 }

@@ -6,10 +6,8 @@ import javafx.scene.shape.Line;
 public abstract class LineObject extends Object {
 	protected Point2D dest = origin;
 	protected Line line;
-	protected int startObject;
-	protected int startPort;
-	protected int endObject;
-	protected int endPort;
+	protected Port startPort;
+	protected Port endPort;
 
 	public LineObject() {
 		line = new Line();
@@ -35,29 +33,19 @@ public abstract class LineObject extends Object {
 		return dest;
 	}
 
-	public void SetStartPort(int object, int port) {
-		startObject = object;
+	public void SetStartPort(Port port) {
 		startPort = port;
 	}
 
-	public int GetStartObject() {
-		return startObject;
-	}
-
-	public int GetStartPort() {
+	public Port GetStartPort() {
 		return startPort;
 	}
 
-	public void SetEndPort(int object, int port) {
-		endObject = object;
+	public void SetEndPort(Port port) {
 		endPort = port;
 	}
 
-	public int GetEndObject() {
-		return endObject;
-	}
-
-	public int GetEndPort() {
+	public Port GetEndPort() {
 		return endPort;
 	}
 

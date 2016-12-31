@@ -9,7 +9,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import mode.Mode;
+import shape.Port;
 import shape.BasicObject;
 import shape.LineObject;
 
@@ -19,15 +21,23 @@ public final class Canvas extends Pane {
 	private ArrayList<BasicObject> objects = new ArrayList<BasicObject>();
 	private ArrayList<LineObject> lines = new ArrayList<LineObject>();
 
+	private Rectangle selectRange;
+	private Point2D rangeOrigin;
+	private boolean hasSelectRange = false;
+
 	private Canvas() {
 		setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 	}
 
 	public void SetMouseEvent(Mode mode) {
-		setOnMouseClicked(mode.GetClickEvent());
-		setOnMousePressed(mode.GetPressEvent());
-		setOnMouseDragged(mode.GetDragEvent());
-		setOnMouseReleased(mode.GetReleaseEvent());
+		setOnMouseClicked(mode.getClickEvent());
+		setOnMousePressed(mode.getPressEvent());
+		setOnMouseDragged(mode.getDragEvent());
+		setOnMouseReleased(mode.getReleaseEvent());
+	}
+
+	public ArrayList<BasicObject> GetBasicObjs() {
+		return objects;
 	}
 
 	public void AddBasicObject(Point2D mouse, BasicObject newObject) {
@@ -37,84 +47,121 @@ public final class Canvas extends Pane {
 		objects.add(newObject);
 	}
 
-	// If point is inside an object, return index of the object
-	public int GetInsideObject(Point2D point) {
-		int object = -1;
+	public BasicObject GetInsideObject(Point2D point) {
+		int index = -1;
 		int depth = 100;
 
 		for (int i = 0; i < objects.size(); i++) {
-			if (objects.get(i).GetBound().getBoundsInParent().contains(point) == true) {
-				// choose object which has less depth value
+			if (objects.get(i).GetSelectedObjBound(point) != null) {
 				if (objects.get(i).GetDepth() < depth) {
-					object = i;
+					index = i;
 					depth = objects.get(i).GetDepth();
 				}
 			}
 		}
-		return object;
+
+		if (index == -1)
+			return null;
+		else
+			return objects.get(index);
 	}
 
 	public void SetLineStartPoint(Point2D mouse, LineObject newLine) {
-		// Get index of object
-		int startObject = GetInsideObject(mouse);
-		int startPort = objects.get(startObject).ChoosePort(mouse);
+		BasicObject startObject = GetInsideObject(mouse);
+		Port startPort = startObject.ChoosePort(mouse);
 
-		// Store started object and port so if we moved the object, we can still
-		// get the location of the started point.
-		newLine.SetStartPort(startObject, startPort);
-		newLine.SetOrigin(objects.get(startObject).GetPorts()[startPort]);
+		newLine.SetStartPort(startPort);
+		newLine.SetOrigin(startPort);
 		newLine.SetDest(mouse);
 
-		// add line shapes to panel
 		getChildren().addAll(newLine.GetShape());
 	}
 
 	public void SetLineEndPoint(Point2D mouse, LineObject newLine) {
-		// Get index of object
-		int endObject = GetInsideObject(mouse);
-		int endPort = objects.get(endObject).ChoosePort(mouse);
+		BasicObject endObject = GetInsideObject(mouse);
+		Port endPort = endObject.ChoosePort(mouse);
 
-		// Store line to port
-		objects.get(endObject).GetPorts()[endPort].AddConnectedLine(newLine);
+		endPort.AddConnectedLine(newLine);
 
-		newLine.SetEndPort(endObject, endPort);
-		newLine.SetDest(objects.get(endObject).GetPorts()[endPort]);
+		newLine.SetEndPort(endPort);
+		newLine.SetDest(endPort);
 		lines.add(newLine);
 	}
 
-	private void SelectWithPress(Point2D mouse) {
-		// check if select a single basic object
-		SelectSingle(mouse);
-	}
-	
-	// select objects with single click
-	private void SelectSingle(Point2D point) {
-		// Get object if mouse is inside an object
-		int object = GetInsideObject(point);
+	public void SelectWithPress(Point2D mouse) {
+		BasicObject obj = GetInsideObject(mouse);
 
-		// if point is inside an object
-		if (object != -1) {
-			// select this object and unselect other selected objects
-			for (int i = 0; i < objects.size(); i++) {
-				if (i == object && objects.get(i).GetSelect() == false) {
-					objects.get(i).SetSelect(true);
-					objects.get(i).SetPortsVisible(true);
-				} else if (i != object && objects.get(i).GetSelect() == true) {
-					objects.get(i).SetSelect(false);
-					objects.get(i).SetPortsVisible(false);
-				}
-			}
-		}
-		// if point isn't in any object
+		if (obj != null)
+			SelectSingle(mouse, obj);
 		else {
-			// unselect selected objects
-			for (int i = 0; i < objects.size(); i++) {
-				if (objects.get(i).GetSelect() == true) {
-					objects.get(i).SetSelect(false);
-					objects.get(i).SetPortsVisible(false);
-				}
+			UnselectObjects();
+			CreateSelectRectangle(mouse);
+		}
+	}
+
+	private void SelectSingle(Point2D mouse, BasicObject selectedObject) {
+		selectedObject.SetSelect(true);
+		selectedObject.SetPortsVisible(true);
+
+		for (BasicObject obj : objects) {
+			if (obj.equals(selectedObject) == false) {
+				obj.SetSelect(false);
+				obj.SetPortsVisible(false);
 			}
 		}
+	}
+
+	private void UnselectObjects() {
+		for (BasicObject obj : objects) {
+			obj.SetSelect(false);
+			obj.SetPortsVisible(false);
+		}
+	}
+
+	private void CreateSelectRectangle(Point2D mouse) {
+		selectRange = new Rectangle(0, 0);
+		selectRange.setFill(Color.TRANSPARENT);
+		selectRange.setStroke(Color.GRAY);
+		selectRange.setX(mouse.getX());
+		selectRange.setY(mouse.getY());
+		rangeOrigin = mouse;
+		getChildren().add(selectRange);
+		hasSelectRange = true;
+	}
+
+	public void DrawSelectRange(Point2D mouse) {
+		double width = mouse.getX() - rangeOrigin.getX();
+		double height = mouse.getY() - rangeOrigin.getY();
+
+		if (width > 0) {
+			selectRange.setWidth(width);
+		} else {
+			selectRange.setWidth((-1.0) * width);
+			selectRange.setX(mouse.getX());
+		}
+
+		if (height > 0) {
+			selectRange.setHeight(height);
+		} else {
+			selectRange.setHeight((-1.0) * height);
+			selectRange.setY(mouse.getY());
+		}
+	}
+
+	public void SelectMultiple() {
+		for (int i = 0; i < objects.size(); i++) {
+			if (selectRange.getBoundsInParent().contains(objects.get(i).GetBound().getBoundsInParent())) {
+				objects.get(i).SetSelect(true);
+				objects.get(i).SetPortsVisible(true);
+			}
+		}
+
+		getChildren().remove(selectRange);
+		hasSelectRange = false;
+	}
+
+	public boolean HasSelectRange() {
+		return hasSelectRange;
 	}
 
 	public static Canvas getInstance() {

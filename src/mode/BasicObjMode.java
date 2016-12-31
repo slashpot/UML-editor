@@ -3,51 +3,42 @@ package mode;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
+import shape.BasicObject;
 
-public class SelectMode extends Mode {
+public abstract class BasicObjMode extends Mode{
+	protected BasicObject newObject;
 	
-	public SelectMode() {
-
-	}
-
-	@Override
-	public void setEvent() {
+	protected void setEvent() {
 		clickEvent = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-
+				Point2D mouse = new Point2D(event.getX(), event.getY());
+				newObj();
+				canvas.AddBasicObject(mouse, newObject);
 			}
 		};
 		
 		pressEvent = new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
-				Point2D mouse = new Point2D(event.getX(), event.getY());
-				canvas.SelectWithPress(mouse);
+				
 			}
 		};
 		
 		dragEvent = new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
-				Point2D mouse = new Point2D(event.getX(), event.getY());
-
-				// restrict mouse position
-				if (mouse.getX() < 0 || mouse.getY() < 0) {
-					return;
-				}
 				
-				if(canvas.HasSelectRange() == true)
-					canvas.DrawSelectRange(mouse);
 			}
 		};
 		
 		releaseEvent = new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
-				if(canvas.HasSelectRange() == true)
-					canvas.SelectMultiple();
+				
 			}
 		};
 	}
+	
+	protected abstract void newObj();
 }

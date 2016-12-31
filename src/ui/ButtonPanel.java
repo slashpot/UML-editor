@@ -28,6 +28,8 @@ public final class ButtonPanel extends GridPane {
 	}
 
 	private void SetButtons() {
+		selectButton.setUserData(selectButton.GetMode());
+		selectButton.setToggleGroup(group);
 		add(selectButton, 0, 0);
 
 		associationButton.setUserData(associationButton.GetMode());

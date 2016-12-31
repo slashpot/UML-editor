@@ -17,4 +17,8 @@ public class Port extends Point2D{
 		connectedLines.add(line);
 	}
 	
+	public Rectangle GetRectangle(){
+		return rect;
+	}
+	
 }
