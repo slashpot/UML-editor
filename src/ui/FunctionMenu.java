@@ -14,46 +14,47 @@ import shape.Group;
 public final class FunctionMenu extends MenuBar {
 	private static final FunctionMenu INSTANCE = new FunctionMenu();
 	private Canvas canvas = Canvas.getInstance(); 
+	private ArrayList<BasicObject> objects = canvas.GetBasicObjs();
 
 	private Menu menuFile;
 	private Menu menuEdit;
 
-	private MenuItem group;
-	private MenuItem ungroup;
-	private MenuItem changeName;
+	private MenuItem groupItem;
+	private MenuItem ungroupItem;
+	private MenuItem renameItem;
 
 	private FunctionMenu() {
-		SetMenus();
-		SetMenuItems();
-		AddMenus();
+		setMenus();
+		setMenuItems();
+		addMenus();
 	}
 
-	private void SetMenus() {
+	private void setMenus() {
 		menuFile = new Menu("File");
 		menuEdit = new Menu("Edit");
 	}
 
-	private void SetMenuItems() {
-		group = new MenuItem("Group");
-		menuEdit.getItems().add(group);
-		group.setOnAction(groupEvent);
+	private void setMenuItems() {
+		groupItem = new MenuItem("Group");
+		menuEdit.getItems().add(groupItem);
+		groupItem.setOnAction(groupEvent);
 
-		ungroup = new MenuItem("UnGroup");
-		menuEdit.getItems().add(ungroup);
-		ungroup.setOnAction(unGroupEvent);
+		ungroupItem = new MenuItem("UnGroup");
+		menuEdit.getItems().add(ungroupItem);
+		ungroupItem.setOnAction(unGroupEvent);
 
-		changeName = new MenuItem("Change Name");
-		menuEdit.getItems().add(changeName);
+		renameItem = new MenuItem("Change Name");
+		menuEdit.getItems().add(renameItem);
+		renameItem.setOnAction(renameEvent);
 	}
 
-	private void AddMenus() {
+	private void addMenus() {
 		getMenus().addAll(menuFile, menuEdit);
 	}
 
 	private EventHandler<ActionEvent> groupEvent = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
-			ArrayList<BasicObject> objects = canvas.GetBasicObjs();
 			Group newGroup = new Group();
 			
 			int counter = 0;
@@ -81,8 +82,6 @@ public final class FunctionMenu extends MenuBar {
 	private EventHandler<ActionEvent> unGroupEvent = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
-			ArrayList<BasicObject> objects = canvas.GetBasicObjs();
-
 			int counter = 0;
 			for(BasicObject obj: objects){
 				if(obj.checkIfSelected() == true)
@@ -98,6 +97,26 @@ public final class FunctionMenu extends MenuBar {
 				}
 			}
 			
+		}
+	};
+	
+	private EventHandler<ActionEvent> renameEvent = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			int counter = 0;
+			for(BasicObject obj: objects){
+				if(obj.checkIfSelected() == true)
+					counter++;
+			}
+			if(counter != 1)
+				return;
+			
+			for(BasicObject obj: objects){
+				if(obj.checkIfSelected() == true && obj.checkIfIsGroup() == false){
+					obj.SetName();
+					break;
+				}
+			}
 		}
 	};
 
