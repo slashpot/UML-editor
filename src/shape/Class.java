@@ -22,6 +22,7 @@ public class Class extends BasicObject {
 		height = 90;
 	}
 	
+	@Override
 	// get outside bound
 	public Shape GetBound() {
 		return shapes[0];
@@ -86,5 +87,10 @@ public class Class extends BasicObject {
 		shapes[3] = middle;
 		
 		return shapes;
+	}
+
+	@Override
+	public void unGroup() {
+
 	}
 }

@@ -36,10 +36,11 @@ public final class FunctionMenu extends MenuBar {
 	private void SetMenuItems() {
 		group = new MenuItem("Group");
 		menuEdit.getItems().add(group);
-		group.setOnAction(GroupEvent);
+		group.setOnAction(groupEvent);
 
 		ungroup = new MenuItem("UnGroup");
 		menuEdit.getItems().add(ungroup);
+		ungroup.setOnAction(unGroupEvent);
 
 		changeName = new MenuItem("Change Name");
 		menuEdit.getItems().add(changeName);
@@ -49,16 +50,24 @@ public final class FunctionMenu extends MenuBar {
 		getMenus().addAll(menuFile, menuEdit);
 	}
 
-	private EventHandler<ActionEvent> GroupEvent = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> groupEvent = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
 			ArrayList<BasicObject> objects = canvas.GetBasicObjs();
 			Group newGroup = new Group();
 			
+			int counter = 0;
+			for(BasicObject obj: objects){
+				if(obj.checkIfSelected() == true)
+					counter++;
+			}
+			if(counter <= 1)
+				return;
+			
 			for(Iterator<BasicObject> it = objects.iterator(); it.hasNext();){
 				BasicObject obj = it.next();
 				
-				if(obj.GetSelect() == true){
+				if(obj.checkIfSelected() == true){
 					newGroup.AddMember(obj);
 					it.remove();
 				}
@@ -66,6 +75,29 @@ public final class FunctionMenu extends MenuBar {
 
 			if(newGroup.GetMembers().size() != 0 )
 				objects.add(newGroup);
+		}
+	};
+	
+	private EventHandler<ActionEvent> unGroupEvent = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			ArrayList<BasicObject> objects = canvas.GetBasicObjs();
+
+			int counter = 0;
+			for(BasicObject obj: objects){
+				if(obj.checkIfSelected() == true)
+					counter++;
+			}
+			if(counter != 1)
+				return;
+			
+			for(BasicObject obj: objects){
+				if(obj.checkIfSelected() == true && obj.checkIfIsGroup() == true){
+					obj.unGroup();
+					break;
+				}
+			}
+			
 		}
 	};
 

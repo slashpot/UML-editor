@@ -19,6 +19,7 @@ public class UseCase extends BasicObject {
 		height = 35;
 	}
 	
+	@Override
 	// get outside bound
 	public Shape GetBound() {
 		return shapes[0];
@@ -76,5 +77,10 @@ public class UseCase extends BasicObject {
 		shapes[1] = name;
 
 		return shapes;
+	}
+
+	@Override
+	public void unGroup() {
+
 	}
 }

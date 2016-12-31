@@ -1,18 +1,19 @@
 package shape;
 
 import java.util.ArrayList;
-
+import javafx.event.ActionEvent;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import ui.Canvas;
 
 public class Group extends BasicObject {
 	private ArrayList<BasicObject> members = new ArrayList<BasicObject>();
 	private Rectangle bound = new Rectangle();
 
 	public Group() {
-
+		isGroup = true;
 	}
 	
 	public void SetPortsVisible(boolean set) {
@@ -84,6 +85,7 @@ public class Group extends BasicObject {
 			return object.GetSelectedObjBound(mouse);
 	}
 
+	@Override
 	public Port ChoosePort(Point2D mouse) {
 		BasicObject object = GetSelectedObj(mouse);
 		return object.ChoosePort(mouse);
@@ -92,6 +94,23 @@ public class Group extends BasicObject {
 	@Override
 	public Shape GetBound() {
 		return bound;
+	}
+	
+	@Override
+	public void unGroup() {
+		ArrayList<BasicObject> objs = Canvas.getInstance().GetBasicObjs();
+		objs.addAll(members);
+		objs.remove(this);
+	}
+	
+	@Override
+	public void SetName() {
+
+	}
+
+	@Override
+	public void ButtonClicked(ActionEvent event) {
+
 	}
 
 	@Override

@@ -21,6 +21,7 @@ public abstract class BasicObject extends Object {
 	protected Port oldPorts[];
 	protected Text name;
 	protected boolean isSelect = false;
+	protected boolean isGroup = false;
 
 	// used for move object
 	private double oldPosX;
@@ -65,8 +66,12 @@ public abstract class BasicObject extends Object {
 		isSelect = bool;
 	}
 
-	public boolean GetSelect() {
+	public boolean checkIfSelected() {
 		return isSelect;
+	}
+	
+	public boolean checkIfIsGroup() {
+		return isGroup;
 	}
 
 	// store old translate before move objects
@@ -150,4 +155,5 @@ public abstract class BasicObject extends Object {
 
 	public abstract Shape GetBound();
 	public abstract Shape GetSelectedObjBound(Point2D mouse);
+	public abstract void unGroup();
 }
