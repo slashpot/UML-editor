@@ -12,7 +12,7 @@ public abstract class LineObject extends Object {
 	public LineObject() {
 		line = new Line();
 	}
-
+	
 	public void SetOrigin(Point2D point) {
 		origin = point;
 		line.setStartX(origin.getX());

@@ -12,7 +12,6 @@ public class GeneralizationLine extends LineObject {
 		shapes = new Shape[2];
 	}
 
-	@Override
 	public void SetDest(Point2D point) {
 		dest = point;
 		line.setEndX(dest.getX());

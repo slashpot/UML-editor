@@ -69,9 +69,12 @@ public final class Canvas extends Pane {
 	public void SetLineStartPoint(Point2D mouse, LineObject newLine) {
 		BasicObject startObject = GetInsideObject(mouse);
 		Port startPort = startObject.ChoosePort(mouse);
+		System.out.println(startPort.getX());
+		System.out.println(startPort.getY());
 
 		newLine.SetStartPort(startPort);
-		newLine.SetOrigin(startPort);
+		Point2D startPoint = new Point2D(startPort.getX(), startPort.getY());
+		newLine.SetOrigin(startPoint);
 		newLine.SetDest(mouse);
 
 		getChildren().addAll(newLine.GetShape());
@@ -81,18 +84,20 @@ public final class Canvas extends Pane {
 		BasicObject endObject = GetInsideObject(mouse);
 		Port endPort = endObject.ChoosePort(mouse);
 
-		endPort.AddConnectedLine(newLine);
-
 		newLine.SetEndPort(endPort);
-		newLine.SetDest(endPort);
+		Point2D endPoint = new Point2D(endPort.getX(), endPort.getY());
+		newLine.SetDest(endPoint);
 		lines.add(newLine);
 	}
 
 	public void SelectWithPress(Point2D mouse) {
 		BasicObject obj = GetInsideObject(mouse);
 
-		if (obj != null)
+		if (obj != null) {
 			SelectSingle(mouse, obj);
+			saveTranslates(mouse);
+		}
+
 		else {
 			UnselectObjects();
 			CreateSelectRectangle(mouse);
@@ -107,6 +112,14 @@ public final class Canvas extends Pane {
 			if (obj.equals(selectedObject) == false) {
 				obj.SetSelect(false);
 				obj.SetPortsVisible(false);
+			}
+		}
+	}
+
+	private void saveTranslates(Point2D mouse) {
+		for (BasicObject object : objects) {
+			if (object.checkIfSelected() == true) {
+				object.SetOldTranslate(mouse);
 			}
 		}
 	}
@@ -158,6 +171,22 @@ public final class Canvas extends Pane {
 
 		getChildren().remove(selectRange);
 		hasSelectRange = false;
+	}
+
+	public void MoveObjects(Point2D mouse) {
+		for (BasicObject object : objects) {
+			if (object.checkIfSelected() == true) {
+				object.Move(mouse);
+			}
+		}
+
+		// redraw lines
+		for (LineObject line : lines) {
+			Point2D startPoint = new Point2D(line.GetStartPort().getX(), line.GetStartPort().getY());
+			Point2D endPoint = new Point2D(line.GetEndPort().getX(), line.GetEndPort().getY());
+			line.SetOrigin(startPoint);
+			line.SetDest(endPoint);
+		}
 	}
 
 	public boolean HasSelectRange() {

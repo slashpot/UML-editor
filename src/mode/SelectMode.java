@@ -39,6 +39,8 @@ public class SelectMode extends Mode {
 				
 				if(canvas.HasSelectRange() == true)
 					canvas.DrawSelectRange(mouse);
+				else
+					canvas.MoveObjects(mouse);
 			}
 		};
 		

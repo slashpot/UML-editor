@@ -18,16 +18,16 @@ public abstract class BasicObject extends Object {
 	protected int width;
 	protected int height;
 	protected Port ports[] = new Port[4];
-	protected Port oldPorts[];
+	protected Port oldPorts[] = new Port[4];
 	protected Text name;
 	protected boolean isSelect = false;
 	protected boolean isGroup = false;
 
 	// used for move object
-	private double oldPosX;
-	private double oldPosY;
-	private double oldTranslateX;
-	private double oldTranslateY;
+	protected double oldPosX;
+	protected double oldPosY;
+	protected double oldTranslateX;
+	protected double oldTranslateY;
 
 	private Button ok;
 	private Button cancel;
@@ -51,11 +51,11 @@ public abstract class BasicObject extends Object {
 
 	public Port ChoosePort(Point2D point) {
 		int choose = 0;
-		double min = point.distance(ports[0]);
+		double min = ports[0].getDistance(point);
 
 		for (int j = 1; j < 4; j++) {
-			if (point.distance(ports[j]) < min) {
-				min = point.distance(ports[j]);
+			if (ports[j].getDistance(point) < min) {
+				min = ports[j].getDistance(point);
 				choose = j;
 			}
 		}
@@ -80,8 +80,10 @@ public abstract class BasicObject extends Object {
 		oldPosY = pos.getY();
 		oldTranslateX = GetBound().getTranslateX();
 		oldTranslateY = GetBound().getTranslateY();
-
-		oldPorts = ports.clone();
+		
+		for(int i = 0; i < ports.length; i++){
+			oldPorts[i] = new Port(ports[i].getX(), ports[i].getY());
+		}
 	}
 
 	// move while dragging
@@ -95,20 +97,13 @@ public abstract class BasicObject extends Object {
 			shapes[i].setTranslateX(newTranslateX);
 			shapes[i].setTranslateY(newTranslateY);
 		}
-		for (int i = 0; i < 4; i++) {
-			ports[i] = new Port(oldPorts[i].getX() + offsetX, oldPorts[i].getY() + offsetY);
-		}
-
-	}
-
-	// set new port positions after move
-	public void SetNewPorts(Point2D pos) {
-		double offsetX = pos.getX() - oldPosX;
-		double offsetY = pos.getY() - oldPosY;
-		for (int i = 0; i < 4; i++) {
-			ports[i] = new Port(ports[i].getX() + offsetX, ports[i].getY() + offsetY);
+		
+		for(int i = 0; i < ports.length; i++){
+			ports[i].setX(oldPorts[i].getX() + offsetX);
+			ports[i].setY(oldPorts[i].getY() + offsetY);
 		}
 	}
+	
 
 	public void SetName() {
 		HBox hbox = new HBox();
@@ -151,7 +146,6 @@ public abstract class BasicObject extends Object {
 			stage.close();
 		}
 	}
-
 
 	public abstract Shape GetBound();
 	public abstract Shape GetSelectedObjBound(Point2D mouse);
