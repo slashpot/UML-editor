@@ -1,13 +1,7 @@
 package ui;
 
 import java.util.ArrayList;
-
-import javafx.geometry.Insets;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import mode.Mode;
 import shape.BasicObject;
 import shape.LineObject;
@@ -19,7 +13,7 @@ public final class Canvas extends Pane {
 	private ArrayList<LineObject> lines = new ArrayList<LineObject>();
 
 	private Canvas() {
-		setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+
 	}
 
 	public void setMouseEvent(Mode mode) {

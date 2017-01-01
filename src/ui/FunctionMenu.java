@@ -43,7 +43,7 @@ public final class FunctionMenu extends MenuBar {
 		menuEdit.getItems().add(ungroupItem);
 		ungroupItem.setOnAction(unGroupEvent);
 
-		renameItem = new MenuItem("Change Name");
+		renameItem = new MenuItem("Rename");
 		menuEdit.getItems().add(renameItem);
 		renameItem.setOnAction(renameEvent);
 	}
@@ -74,8 +74,11 @@ public final class FunctionMenu extends MenuBar {
 				}
 			}
 
-			if(newGroup.GetMembers().size() != 0 )
+			if(newGroup.GetMembers().size() != 0 ){
 				objects.add(newGroup);
+				newGroup.setDepth(99 - objects.size());
+			}
+
 		}
 	};
 	

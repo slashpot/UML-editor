@@ -33,10 +33,6 @@ public abstract class BasicObject extends Object {
 	private Button cancel;
 	private TextField textField;
 	private Stage stage;
-
-	public BasicObject() {
-		
-	}
 	
 	public Port[] getPorts() {
 		return ports;
@@ -101,6 +97,7 @@ public abstract class BasicObject extends Object {
 		for(int i = 0; i < ports.length; i++){
 			ports[i].setX(oldPorts[i].getX() + offsetX);
 			ports[i].setY(oldPorts[i].getY() + offsetY);
+			ports[i].resetLines();
 		}
 	}
 	

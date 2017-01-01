@@ -1,9 +1,12 @@
 package shape;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 
 public class Port{
+	private ArrayList<LineObject> connectedLines = new ArrayList<LineObject>();
 	private Rectangle rect = new Rectangle();
 	private double x;
 	private double y;
@@ -27,6 +30,19 @@ public class Port{
 	
 	public double getY() {
 		return y;
+	}
+	
+	public void addLine(LineObject newLine){
+		connectedLines.add(newLine);
+	}
+	
+	public void resetLines(){
+		for(LineObject line: connectedLines){
+			Point2D startPoint = new Point2D(line.getStartPort().getX(), line.getStartPort().getY());
+			Point2D endPoint = new Point2D(line.getEndPort().getX(), line.getEndPort().getY());
+			line.setOrigin(startPoint);
+			line.setDest(endPoint);
+		}
 	}
 	
 	public double getDistance(Point2D point){

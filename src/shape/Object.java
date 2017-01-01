@@ -8,10 +8,6 @@ public abstract class Object {
 	protected Point2D origin;
 	protected Shape[] shapes;
 
-	public Object() {
-
-	}
-
 	public int getDepth() {
 		return depth;
 	}

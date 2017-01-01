@@ -6,7 +6,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import shape.BasicObject;
-import shape.LineObject;
 
 public class SelectMode extends Mode {
 	private Rectangle selectRange;
@@ -149,14 +148,6 @@ public class SelectMode extends Mode {
 			if (object.checkIfSelected() == true) {
 				object.move(mouse);
 			}
-		}
-
-		// redraw lines
-		for (LineObject line : canvas.getLineObjs()) {
-			Point2D startPoint = new Point2D(line.getStartPort().getX(), line.getStartPort().getY());
-			Point2D endPoint = new Point2D(line.getEndPort().getX(), line.getEndPort().getY());
-			line.setOrigin(startPoint);
-			line.setDest(endPoint);
 		}
 	}
 }

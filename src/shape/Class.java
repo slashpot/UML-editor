@@ -66,15 +66,15 @@ public class Class extends BasicObject {
 
 		top = new Line(origin.getX(), origin.getY() + height / 3, origin.getX() + width, origin.getY() + height / 3);
 		middle = new Line(origin.getX(), origin.getY() + height / 3 * 2, origin.getX() + width, origin.getY() + height / 3 * 2);
-		top.setStroke(Color.GRAY);
-		middle.setStroke(Color.GRAY);
+		top.setStroke(Color.BLACK);
+		middle.setStroke(Color.BLACK);
 		
 		rect.setX(origin.getX());
 		rect.setY(origin.getY());
 		rect.setWidth(width);
 		rect.setHeight(height);
 		rect.setFill(Color.WHITE);
-		rect.setStroke(Color.GRAY);
+		rect.setStroke(Color.BLACK);
 		
 		shapes[0] = rect;
 		shapes[1] = name;

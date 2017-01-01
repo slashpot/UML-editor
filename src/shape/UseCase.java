@@ -66,7 +66,7 @@ public class UseCase extends BasicObject {
 		ellipse.setRadiusX(width);
 		ellipse.setRadiusY(height);
 		ellipse.setFill(Color.WHITE);
-		ellipse.setStroke(Color.GRAY);
+		ellipse.setStroke(Color.BLACK);
 		// add all shapes
 		shapes[0] = ellipse;
 		shapes[1] = name;

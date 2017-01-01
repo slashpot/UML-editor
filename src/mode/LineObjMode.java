@@ -49,8 +49,11 @@ public abstract class LineObjMode extends Mode{
 			public void handle(MouseEvent event) {
 				Point2D mouse = new Point2D(event.getX(), event.getY());
 
-				if (getInsideObject(mouse) != null)
+				if (getInsideObject(mouse) != null){
 					setLineEndPoint(mouse, newLine);
+					newLine.getStartPort().addLine(newLine);
+					newLine.getEndPort().addLine(newLine);
+				}
 				else
 					canvas.getChildren().removeAll(newLine.getShape());
 			}
