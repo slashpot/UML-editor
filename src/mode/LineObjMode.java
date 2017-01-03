@@ -79,7 +79,6 @@ public abstract class LineObjMode extends Mode{
 		newLine.setEndPort(endPort);
 		Point2D endPoint = new Point2D(endPort.getX(), endPort.getY());
 		newLine.setDest(endPoint);
-		canvas.getLineObjs().add(newLine);
 	}
 	
 	protected abstract void newObj();

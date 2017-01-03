@@ -27,6 +27,7 @@ public final class FunctionMenu extends MenuBar {
 		setMenus();
 		setMenuItems();
 		addMenus();
+		setId("menu-bar");
 	}
 
 	private void setMenus() {

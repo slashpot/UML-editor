@@ -23,6 +23,7 @@ public class CompositionLine extends LineObject {
 	public Shape[] getShape() {
 		shapes[0] = line;
 		shapes[1] = diamond;
+		diamond.getStyleClass().add("line-head");
 		return shapes;
 	}
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import ui.Canvas;
@@ -16,9 +15,7 @@ public class Group extends BasicObject {
 
 	public Group() {
 		isGroup = true;
-		
-		bound.setFill(Color.TRANSPARENT);
-		bound.setStroke(Color.BLACK);
+		bound.getStyleClass().add("group-bound");
 		Canvas.getInstance().getChildren().add(bound);
 	}
 	

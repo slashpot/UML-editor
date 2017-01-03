@@ -23,6 +23,7 @@ public class GeneralizationLine extends LineObject {
 	public Shape[] getShape() {
 		shapes[0] = line;
 		shapes[1] = triangle;
+		triangle.getStyleClass().add("line-head");
 		return shapes;
 	}
 

@@ -1,0 +1,53 @@
+.text, .object-name {
+	-fx-fill: white;
+}
+
+.port, .line-head {
+	-fx-fill: rgb(0, 151, 251);
+	-fx-stroke: rgb(0, 151, 251);
+}
+
+.line-head {
+	-fx-fill: white;
+	-fx-stroke: white;
+}
+
+.object-outline {
+	-fx-fill: rgb(27, 27, 28);
+	-fx-stroke: white;
+}
+
+.line {
+	-fx-stroke: white;
+}
+
+.group-bound {
+	-fx-fill: transparent;
+	-fx-stroke: rgb(0, 151, 251);
+}
+
+#select-range {
+	-fx-fill: transparent;
+	-fx-stroke: white;
+}
+
+.toggle-button, .button{
+  	-fx-base: rgb(27, 27, 28);
+}
+
+#button-panel, #rename-pane {
+	-fx-background-color: rgb(40, 40, 43);
+}
+
+#canvas {
+	-fx-background-color: rgb(37, 37, 38);
+}
+
+#menu-bar {
+	-fx-background-color: rgb(45, 45, 48);
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color:  rgb(27, 27, 28);
+}

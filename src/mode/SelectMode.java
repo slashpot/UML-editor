@@ -3,7 +3,6 @@ package mode;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import shape.BasicObject;
 
@@ -102,8 +101,7 @@ public class SelectMode extends Mode {
 
 	private void createSelectRectangle(Point2D mouse) {
 		selectRange = new Rectangle(0, 0);
-		selectRange.setFill(Color.TRANSPARENT);
-		selectRange.setStroke(Color.GRAY);
+		selectRange.setId("select-range");
 		selectRange.setX(mouse.getX());
 		selectRange.setY(mouse.getY());
 		rangeOrigin = mouse;

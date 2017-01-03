@@ -13,7 +13,9 @@ public class UseCase extends BasicObject {
 
 	public UseCase() {
 		name = new Text();
+		name.getStyleClass().add("object-name");
 		ellipse = new Ellipse();
+		ellipse.getStyleClass().add("object-outline");
 		shapes = new Shape[6];
 		width = 60;
 		height = 35;

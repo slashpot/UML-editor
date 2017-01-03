@@ -25,6 +25,7 @@ public final class ButtonPanel extends GridPane {
 		setVgap(10);
 		setPadding(new Insets(5, 3, 5, 3));
 		setButtons();
+		setId("button-panel");
 	}
 
 	private void setButtons() {

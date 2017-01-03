@@ -11,6 +11,7 @@ public abstract class LineObject extends Object {
 
 	public LineObject() {
 		line = new Line();
+		line.getStyleClass().add("line");
 	}
 	
 	public void setOrigin(Point2D point) {

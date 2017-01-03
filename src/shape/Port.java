@@ -12,6 +12,7 @@ public class Port{
 	private double y;
 
 	public Port(double x, double y) {
+		rect.getStyleClass().add("port");
 		this.x = x;
 		this.y = y;
 	}

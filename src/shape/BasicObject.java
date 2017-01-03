@@ -118,12 +118,14 @@ public abstract class BasicObject extends Object {
 		textField.setPrefWidth(175);
 
 		FlowPane pane = new FlowPane();
+		pane.setId("rename-pane");
 		pane.setPadding(new Insets(15, 12, 15, 12));
 		pane.setHgap(15);
 		pane.setVgap(10);
 		pane.getChildren().addAll(label, textField, hbox);
 
 		Scene scene = new Scene(pane, 260, 80);
+		scene.getStylesheets().add("css/Dark.css");
 		stage = new Stage();
 		stage.setScene(scene);
 		stage.setResizable(false);

@@ -16,7 +16,9 @@ public class Class extends BasicObject {
 
 	public Class() {
 		name = new Text();
+		name.getStyleClass().add("object-name");
 		rect = new Rectangle();
+		rect.getStyleClass().add("object-outline");
 		shapes = new Shape[8];
 		width = 90;
 		height = 90;
@@ -66,8 +68,10 @@ public class Class extends BasicObject {
 
 		top = new Line(origin.getX(), origin.getY() + height / 3, origin.getX() + width, origin.getY() + height / 3);
 		middle = new Line(origin.getX(), origin.getY() + height / 3 * 2, origin.getX() + width, origin.getY() + height / 3 * 2);
-		top.setStroke(Color.BLACK);
-		middle.setStroke(Color.BLACK);
+		top.getStyleClass().add("object-outline");
+		middle.getStyleClass().add("object-outline");
+		//top.setStroke(Color.BLACK);
+		//middle.setStroke(Color.BLACK);
 		
 		rect.setX(origin.getX());
 		rect.setY(origin.getY());

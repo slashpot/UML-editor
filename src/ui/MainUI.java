@@ -19,6 +19,7 @@ public class MainUI extends Application {
 		root.setLeft(ButtonPanel.getInstance());
 		root.setCenter(Canvas.getInstance());
 		scene = new Scene(root, 1100, 735);
+		scene.getStylesheets().add("css/Dark.css");
 	}
 
 	@Override
