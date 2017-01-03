@@ -16,7 +16,6 @@ public final class FunctionMenu extends MenuBar {
 	private Canvas canvas = Canvas.getInstance(); 
 	private ArrayList<BasicObject> objects = canvas.getBasicObjs();
 
-	private Menu menuFile;
 	private Menu menuEdit;
 
 	private MenuItem groupItem;
@@ -31,7 +30,6 @@ public final class FunctionMenu extends MenuBar {
 	}
 
 	private void setMenus() {
-		menuFile = new Menu("File");
 		menuEdit = new Menu("Edit");
 	}
 
@@ -50,7 +48,7 @@ public final class FunctionMenu extends MenuBar {
 	}
 
 	private void addMenus() {
-		getMenus().addAll(menuFile, menuEdit);
+		getMenus().add(menuEdit);
 	}
 
 	private EventHandler<ActionEvent> groupEvent = new EventHandler<ActionEvent>() {
