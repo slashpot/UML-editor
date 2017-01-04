@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class RenamePanel {
+public class RenameWindow {
 	private HBox hbox;
 	private Button ok;
 	private Button cancel;
@@ -23,11 +23,11 @@ public class RenamePanel {
 	private Stage stage;
 	private Text name;
 	
-	public RenamePanel(Text name) {
+	public RenameWindow(Text name) {
 		this.name = name;
 	}
 	
-	public void rename() {
+	public void show() {
 		hbox = new HBox();
 		hbox.setSpacing(10);
 		ok = new Button("OK");
@@ -50,7 +50,7 @@ public class RenamePanel {
 		pane.getChildren().addAll(label, textField, hbox);
 
 		scene = new Scene(pane, 260, 80);
-		scene.getStylesheets().add("css/Dark.css");
+		scene.getStylesheets().add("css/theme.css");
 		stage = new Stage();
 		stage.setScene(scene);
 		stage.setResizable(false);

@@ -3,7 +3,7 @@ package shape;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
-import ui.RenamePanel;
+import ui.RenameWindow;
 
 public abstract class BasicObject extends Object {
 	protected int width;
@@ -20,7 +20,7 @@ public abstract class BasicObject extends Object {
 	protected double oldTranslateX;
 	protected double oldTranslateY;
 	
-	private RenamePanel renamePane;
+	private RenameWindow renamePane;
 
 	public Port[] getPorts() {
 		return ports;
@@ -89,8 +89,8 @@ public abstract class BasicObject extends Object {
 	}
 
 	public void setName() {
-		renamePane = new RenamePanel(name);
-		renamePane.rename();
+		renamePane = new RenameWindow(name);
+		renamePane.show();
 	}
 
 
