@@ -1,7 +1,6 @@
 package shape;
 
 import java.util.ArrayList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
@@ -136,11 +135,6 @@ public class Group extends BasicObject {
 	
 	@Override
 	public void setName() {
-
-	}
-
-	@Override
-	public void buttonClicked(ActionEvent event) {
 
 	}
 

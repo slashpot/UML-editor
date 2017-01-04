@@ -23,12 +23,12 @@
 
 .group-bound {
 	-fx-fill: transparent;
-	-fx-stroke: rgb(0, 151, 251);
+	-fx-stroke: white;
 }
 
 #select-range {
 	-fx-fill: transparent;
-	-fx-stroke: white;
+	-fx-stroke:  rgb(0, 151, 251);
 }
 
 .toggle-button, .button{
