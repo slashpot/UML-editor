@@ -1,25 +1,20 @@
 package ui;
 
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import mode.Mode;
 import mode.UseCaseMode;
 
-public class UseCaseButton extends ToggleButton{
-	private String name = "Use Case";
-	private Tooltip tip = new Tooltip(name);
-	private Image icon = new Image("icon/use case.png");
-	private Mode mode = new UseCaseMode();
-	
-	public UseCaseButton(){
-		setGraphic(new ImageView(icon));
-		setTooltip(tip);
-		setId(name);
+public class UseCaseButton extends FunctionButton {
+
+	public UseCaseButton() {
+
 	}
-	
-	public Mode getMode(){
-		return mode;
+
+	@Override
+	protected void setUp() {
+		name = "Use Case";
+		tip = new Tooltip(name);
+		icon = new Image("icon/use case.png");
+		mode = new UseCaseMode();
 	}
 }

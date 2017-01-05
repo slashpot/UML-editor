@@ -12,46 +12,36 @@ public final class ButtonPanel extends GridPane {
 	private static final ButtonPanel INSTANCE = new ButtonPanel();
 
 	private ToggleGroup group = new ToggleGroup();
-
-	private SelectButton selectButton = new SelectButton();
-	private AssociationButton associationButton = new AssociationButton();
-	private GeneralizationButton generalizationButton = new GeneralizationButton();
-	private CompositionButton compositionButton = new CompositionButton();
-	private ClassButton classButton = new ClassButton();
-	private UseCaseButton useCaseButton = new UseCaseButton();
+	private FunctionButton[] buttons;
+	private int buttonNumber;
 
 	private ButtonPanel() {
+		setId("button-panel");
 		setHgap(10);
 		setVgap(10);
 		setPadding(new Insets(5, 3, 5, 3));
 		setButtons();
-		setId("button-panel");
+		addButtons();
 	}
 
 	private void setButtons() {
-		selectButton.setUserData(selectButton.getMode());
-		selectButton.setToggleGroup(group);
-		add(selectButton, 0, 0);
+		buttonNumber = 6;
+		buttons = new FunctionButton[buttonNumber];
 
-		associationButton.setUserData(associationButton.getMode());
-		associationButton.setToggleGroup(group);
-		add(associationButton, 0, 1);
-
-		generalizationButton.setUserData(generalizationButton.getMode());
-		generalizationButton.setToggleGroup(group);
-		add(generalizationButton, 0, 2);
-		
-		compositionButton.setUserData(compositionButton.getMode());
-		compositionButton.setToggleGroup(group);
-		add(compositionButton, 0, 3);
-
-		classButton.setUserData(classButton.getMode());
-		classButton.setToggleGroup(group);
-		add(classButton, 0, 4);
-
-		useCaseButton.setUserData(useCaseButton.getMode());
-		useCaseButton.setToggleGroup(group);
-		add(useCaseButton, 0, 5);
+		buttons[0] = new SelectButton();
+		buttons[1] = new AssociationButton();
+		buttons[2] = new GeneralizationButton();
+		buttons[3] = new CompositionButton();
+		buttons[4] = new ClassButton();
+		buttons[5] = new UseCaseButton();
+	}
+	
+	private void addButtons() {
+		for (int i = 0; i < buttonNumber; i++) {
+			buttons[i].setUserData(buttons[i].getMode());
+			buttons[i].setToggleGroup(group);
+			add(buttons[i], 0, i);
+		}
 
 		group.selectedToggleProperty().addListener(buttonListener);
 	}

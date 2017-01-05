@@ -1,25 +1,19 @@
 package ui;
 
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import mode.Mode;
 import mode.SelectMode;
 
-public class SelectButton extends ToggleButton{
-	private String name = "Select";
-	private Tooltip tip = new Tooltip(name);
-	private Image icon = new Image("icon/select.png");
-	private Mode mode = new SelectMode();
-	
-	public SelectButton(){
-		setGraphic(new ImageView(icon));
-		setTooltip(tip);
-		setId(name);
+public class SelectButton extends FunctionButton {
+	public SelectButton() {
+
 	}
-	
-	public Mode getMode(){
-		return mode;
+
+	@Override
+	protected void setUp() {
+		name = "Select";
+		tip = new Tooltip(name);
+		icon = new Image("icon/select.png");
+		mode = new SelectMode();
 	}
 }
