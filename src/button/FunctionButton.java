@@ -1,4 +1,4 @@
-package ui;
+package button;
 
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
