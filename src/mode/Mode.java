@@ -6,11 +6,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import shape.BasicObject;
+import shape.LineObject;
 import ui.Canvas;
 
 public abstract class Mode {
 	protected Canvas canvas = Canvas.getInstance();
 	protected ArrayList<BasicObject> objects = canvas.getBasicObjs();
+	protected ArrayList<LineObject> lines = canvas.getLineObjs();
 	protected EventHandler<MouseEvent> clickEvent;
 	protected EventHandler<MouseEvent> pressEvent;
 	protected EventHandler<MouseEvent> dragEvent;

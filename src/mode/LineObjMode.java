@@ -50,7 +50,9 @@ public abstract class LineObjMode extends Mode{
 				Point2D mouse = new Point2D(event.getX(), event.getY());
 
 				if (getInsideObject(mouse) != null){
+					lines.add(newLine);
 					setLineEndPoint(mouse, newLine);
+					newLine.setDepth(99 - objects.size());
 					newLine.getStartPort().addLine(newLine);
 					newLine.getEndPort().addLine(newLine);
 				}
